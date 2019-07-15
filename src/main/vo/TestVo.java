@@ -24,5 +24,4 @@ public class TestVo {
 		this.user_name = user_name;
 	}
 	
-	
 }

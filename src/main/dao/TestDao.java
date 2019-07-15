@@ -3,12 +3,16 @@ package main.dao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import main.vo.TestVo;
 
-public class TestDao {
-		
+public class TestDao { //거 ..회원관리dao 게시판 dao이런식으로 나눌수 있음 cud전용 r전용
+	//sql쿼리문을 실행시키는 객체
+	 PreparedStatement pstmt;
+	 //처리된 레코드의 값을 테이블의 형태로  담는 객체 select문에 사용됨 rs에 꼭 저장해야함
+	private ResultSet rs;
 		//prep = conn.prepareStatement("insert into testuser(user_id, user_pw, user_name) value(?, ?, ?)");
 	
 	private Connection getConnection() throws SQLException {
@@ -27,17 +31,15 @@ public class TestDao {
         return conn;
     }
 		
-		 public void insert(TestVo vo) {
-			 
-			 			        
-		        PreparedStatement pstmt;
+		 public void insert(TestVo vo) {		
+			 	Connection conn = null;
 
 		        try {
-		        	Connection conn = null;
+		        	
 		        	conn = getConnection();
 		        	
 		            // Column
-		            // PK , name , email , password
+		            // 아이디, 비밀번호, 이름순으로 추가
 		            String sql = "INSERT INTO testuser VALUES (?, ?, ?);";
 		            pstmt = conn.prepareStatement(sql);
 
@@ -51,20 +53,53 @@ public class TestDao {
 		            e.printStackTrace();
 		        }
 		        finally {
-//		            try {
-//		                if( conn != null ) {
+     //						try catch문에 넣ㅇ어어ㅑ됨
 //		                    conn.close();
-//		                }
-//		                if( pstmt != null ) {
+//		                
+//		       
 //		                    pstmt.close();
-//		                }
-//		            }
-//		            catch(SQLException e) {
-//		                e.printStackTrace();
-//		            }
+//		                
+//		        
+//		           
 		        }
+		 }
+		        
+		        public void select(TestVo vo) {
+					 
+ 			        
+			       // PreparedStatement pstmt;
+
+			        try {
+			        	Connection conn = null;
+			        	conn = getConnection();
+			        	
+			            // Column
+			            // PK , name , email , password
+			            String sql = "select user_pw from testuser where user_id=?;";
+			            pstmt = conn.prepareStatement(sql);
+			            rs = pstmt.executeQuery();
+			           // pstmt.executeUpdate();	      
+			            
+
+			            }
+			        catch (SQLException e) {
+			            e.printStackTrace();
+			        }
+			        finally {
+//			            try {
+//			                if( conn != null ) {
+//			                    conn.close();
+//			                }
+//			                if( pstmt != null ) {
+//			                    pstmt.close();
+//			                }
+//			            }
+//			            catch(SQLException e) {
+//			                e.printStackTrace();
+//			            }
+			        }
 
 	
 		 }
-	}
+}
 

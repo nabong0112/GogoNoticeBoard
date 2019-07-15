@@ -1,6 +1,8 @@
 package main.web;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,7 +15,7 @@ import main.vo.TestVo;
 /**
  * Servlet implementation class TestServlet
  */
-@WebServlet("/TestServlet")
+@WebServlet("/TestServlet") //회원가입폼으로 이동해서 값을 입력하면 데이터베이스에 저장하는 일
 public class TestServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -30,9 +32,7 @@ public class TestServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		request.setCharacterEncoding("utf-8");
-		
-		
+		request.setCharacterEncoding("utf-8");		
 		
 		TestVo vo = new TestVo();
 		
@@ -41,8 +41,13 @@ public class TestServlet extends HttpServlet {
 		vo.setUser_name(request.getParameter("user_name"));
 		
 		TestDao dao = new TestDao();
+		//클라이언트가 입력한 데이터를 넘겨줌
 		dao.insert(vo);
-		response.sendRedirect("/Nabong_writer/TestJsp.jsp");
+		//join폼으로 이동해서 값을 받아야됨
+		response.sendRedirect("/Nabong_writer/joinform.jsp");
+		//("/Nabong_writer/login.jsp");
+//		RequestDispatcher rd = request.getRequestDispatcher("/Nabong_writer/noitceboard.jsp");
+//		rd.forward(request, response);
 	}
 
 	/**
