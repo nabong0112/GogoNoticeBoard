@@ -32,6 +32,7 @@ public class TestServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		//요청받아서 jsp를 뿜어내는 역할
 		request.setCharacterEncoding("utf-8");		
 		
 		TestVo vo = new TestVo();

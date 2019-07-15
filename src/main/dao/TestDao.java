@@ -8,26 +8,27 @@ import java.sql.SQLException;
 
 import main.vo.TestVo;
 
-public class TestDao { //거 ..회원관리dao 게시판 dao이런식으로 나눌수 있음 cud전용 r전용
+public class TestDao { //거 ..회원관리dao 게시판 dao이런식으로 나눌수 있음 cud전용 r전용 여기는 db에 접근해서 쿼리를 실행시키는 담당
 	//sql쿼리문을 실행시키는 객체
 	 PreparedStatement pstmt;
-	 //처리된 레코드의 값을 테이블의 형태로  담는 객체 select문에 사용됨 rs에 꼭 저장해야함
-	private ResultSet rs;
+	 
 		//prep = conn.prepareStatement("insert into testuser(user_id, user_pw, user_name) value(?, ?, ?)");
 	
 	private Connection getConnection() throws SQLException {
         Connection conn = null;
 
         try {
+        	//드라이버의 클래스 이름
             Class.forName("org.mariadb.jdbc.Driver");
 
-        
+            //driver manager로 데이터베이스에 연결
             conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/TestDB", "root", "1234");
         }
         catch (ClassNotFoundException e) {
+        	//드라이버의 클래스를 찾지 못했을 경우
             System.out.println(" 드라이버 로딩 실패 ");
         }
-
+        //연결한것을 반환시킴
         return conn;
     }
 		
@@ -43,9 +44,11 @@ public class TestDao { //거 ..회원관리dao 게시판 dao이런식으로 나�
 		            String sql = "INSERT INTO testuser VALUES (?, ?, ?);";
 		            pstmt = conn.prepareStatement(sql);
 
+		            //물음표의 순번, 적용할 값 삽입
 		            pstmt.setString(1, vo.getUser_id());
 		            pstmt.setString(2, vo.getUser_pw());
 		            pstmt.setString(3, vo.getUser_name());
+		            //select문은 excutequery를 사용해야함
 		            pstmt.executeUpdate();
 
 		            }
@@ -53,32 +56,37 @@ public class TestDao { //거 ..회원관리dao 게시판 dao이런식으로 나�
 		            e.printStackTrace();
 		        }
 		        finally {
-     //						try catch문에 넣ㅇ어어ㅑ됨
-//		                    conn.close();
-//		                
-//		       
-//		                    pstmt.close();
-//		                
-//		        
-//		           
+		        	try {
+		                if( conn != null ) {
+			                 conn.close();
+				                }
+				                if( pstmt != null ) {
+				                    pstmt.close();
+				                }
+				            }
+				            catch(SQLException e) {
+				                e.printStackTrace();
+				            }	           
 		        }
 		 }
 		        
-		        public void select(TestVo vo) {
-					 
+		        public void select(TestVo vo) { //-----------------아직 수정중---------------------//
+		        	
+		        	Connection conn = null;
+		        	//처리된 레코드의 값을 테이블의 형태로  담는 객체 select문에 사용됨 rs에 꼭 저장해야함
+		        	ResultSet rs = null; 
  			        
 			       // PreparedStatement pstmt;
 
 			        try {
-			        	Connection conn = null;
+			        	
 			        	conn = getConnection();
 			        	
 			            // Column
 			            // PK , name , email , password
 			            String sql = "select user_pw from testuser where user_id=?;";
 			            pstmt = conn.prepareStatement(sql);
-			            rs = pstmt.executeQuery();
-			           // pstmt.executeUpdate();	      
+			            rs = pstmt.executeQuery();  
 			            
 
 			            }
@@ -86,17 +94,17 @@ public class TestDao { //거 ..회원관리dao 게시판 dao이런식으로 나�
 			            e.printStackTrace();
 			        }
 			        finally {
-//			            try {
-//			                if( conn != null ) {
-//			                    conn.close();
-//			                }
-//			                if( pstmt != null ) {
-//			                    pstmt.close();
-//			                }
-//			            }
-//			            catch(SQLException e) {
-//			                e.printStackTrace();
-//			            }
+			            try {
+	                if( conn != null ) {
+		                    conn.close();
+			                }
+			                if( pstmt != null ) {
+			                    pstmt.close();
+			                }
+			            }
+			            catch(SQLException e) {
+			                e.printStackTrace();
+			            }
 			        }
 
 	
