@@ -45,7 +45,7 @@ public class TestServlet extends HttpServlet {
 		//클라이언트가 입력한 데이터를 넘겨줌
 		dao.insert(vo);
 		//join폼으로 이동해서 값을 받아야됨
-		response.sendRedirect("/Nabong_writer/joinform.jsp");
+		response.sendRedirect("/Nabong_writer/loginform.jsp"); //거 폼에 들어갈라면 서블릿을 호출해야도미ㅋㅋㅋ
 		//("/Nabong_writer/login.jsp");
 //		RequestDispatcher rd = request.getRequestDispatcher("/Nabong_writer/noitceboard.jsp");
 //		rd.forward(request, response);

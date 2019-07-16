@@ -84,7 +84,7 @@ public class TestDao { //거 ..회원관리dao 게시판 dao이런식으로 나�
 			        	
 			            // Column
 			            // PK , name , email , password
-			            String sql = "select user_pw from testuser where user_id=?;";
+			            String sql = "select * from testuser where user_id= '?' and user_pw= '?'";
 			            pstmt = conn.prepareStatement(sql);
 			            rs = pstmt.executeQuery();  
 			            

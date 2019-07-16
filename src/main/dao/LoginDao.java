@@ -29,29 +29,40 @@ public class LoginDao {
     }
 	
 	public void userCheck(TestVo vo) {
-		String sql = "select user_pw from testuser where user_id= ?";
+		String sql = "select * from testuser where user_id= '?' and user_pw= '?'";
 		
 		
 		try {
+			String user_id = null;
+			String user_pw = null;
+			String user_name = null;
+			
 			conn = getConnection();
 			prep = conn.prepareStatement(sql);
 			
 			System.out.println("1");
-			rs = prep.executeQuery(sql);
+			
 			
 			prep.setString(1, vo.getUser_id());
 			prep.setString(2, vo.getUser_pw());
+			prep.setString(3, vo.getUser_name());
+			System.out.println(user_id);
+			System.out.println(user_pw);
+			System.out.println(user_name);
+			
+			rs = prep.executeQuery(sql);
 			
 			
-			System.out.println("아오 다오 들어왔음2");
+			//prep.setString(3, vo.getUser_name());
 			//System.out.println(rs.getString("user_id"));
 			
 			while(rs.next()) {
-				//if(/*rs.getString("user_id").equals() && */rs.getString("user_pw")!=null /*&& rs.getString("user_pw").equals(user_pw)*/) {
+				//if(rs.getString("user_id").equals() && rs.getString("user_pw")!=null && rs.getString("user_pw").equals(user_pw)) {
 					
-					System.out.println(rs.getString("user_id"));
-					
-					
+				user_id = rs.getString("user_id");
+				user_pw = rs.getString("user_pw");
+				user_name = rs.getString("user_name");		
+				System.out.println(user_id + user_pw + user_name);
 					
 			}
 		}catch(Exception e){

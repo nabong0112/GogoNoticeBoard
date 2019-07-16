@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-    <% String user_name = (String)request.getAttribute("user_name"); %>
+    <% String user_id = (String)session.getAttribute("user_id");
+    String user_name = (String)session.getAttribute("user_name"); %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -10,7 +11,7 @@
 <body>
 <div id="container">
 	<div id ="header" style="background-color:#FFA777;height: 50px">  <!-- 로그아웃 action값에 저거 말고 로그인 확인하는 폼(logout_ok.java) 만들어야됨 세션 끊으면서 안녕히가세요! 라는 alter인가-->
-	<%= user_name %>님 안녕하세요! <a href="#" id="mymenu">내 정보</a> <a href="loginform.jsp" id="logout">로그아웃</a>
+	<%= user_name %> , <%= user_id %>님 안녕하세요! <a href="#" id="mymenu">내 정보</a> <a href="loginform.jsp" id="logout">로그아웃</a>
 	</div>
 	<div id="content" style="background-color: #EEEEEE;height: 883px;width: 1900px;float: left;">
 	<div id ="menu" style="background-color: #FFD700;height: 883px;width: 145px;float: left;">
