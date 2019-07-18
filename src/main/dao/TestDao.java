@@ -70,7 +70,9 @@ public class TestDao { //거 ..회원관리dao 게시판 dao이런식으로 나�
 		        }
 		 }
 		        
-		        public void select(TestVo vo) { //-----------------아직 수정중---------------------//
+		        public boolean select(TestVo vo, String user_id, String user_pw) { //-----------------아직 수정중---------------------//
+		        	boolean ok = false;
+		        	TestVo member = null;
 		        	
 		        	Connection conn = null;
 		        	//처리된 레코드의 값을 테이블의 형태로  담는 객체 select문에 사용됨 rs에 꼭 저장해야함
@@ -84,11 +86,27 @@ public class TestDao { //거 ..회원관리dao 게시판 dao이런식으로 나�
 			        	
 			            // Column
 			            // PK , name , email , password
-			            String sql = "select * from testuser where user_id= '?' and user_pw= '?'";
+			            String sql = "select user_pw from testuser where user_id= ?;";
 			            pstmt = conn.prepareStatement(sql);
-			            rs = pstmt.executeQuery();  
 			            
-
+			            pstmt.setString(1, user_id);
+			            
+			            rs = pstmt.executeQuery();
+			            
+			            
+			            
+			            if(rs.next()) {
+			            	if(rs.getString(1).equals(user_pw)) {
+			            		System.out.println("1");
+			            	}
+			            	
+//			            	member = new TestVo();
+//			            	member.setUser_id(rs.getString("user_id"));
+//			            	member.setUser_pw(rs.getString("user_pw"));
+			            	
+			            }
+			            
+			            
 			            }
 			        catch (SQLException e) {
 			            e.printStackTrace();
@@ -107,7 +125,7 @@ public class TestDao { //거 ..회원관리dao 게시판 dao이런식으로 나�
 			            }
 			        }
 
-	
+			        return true;
 		 }
 }
 

@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import main.vo.TestVo;
 
 public class LoginDao {
@@ -12,7 +13,15 @@ public class LoginDao {
 	PreparedStatement prep = null;
 	ResultSet rs = null;
 	
-	private Connection getConnection() throws SQLException {
+	private static LoginDao instance = new LoginDao();
+	
+	public static LoginDao getInstance() {
+		
+		return instance;
+		
+	}
+	
+	 Connection getConnection() throws SQLException {
         Connection conn = null;
 
         try {
@@ -28,44 +37,39 @@ public class LoginDao {
         return conn;
     }
 	
-	public void userCheck(TestVo vo) {
-		String sql = "select * from testuser where user_id= '?' and user_pw= '?'";
-		
+	public int userCheck(TestVo vo, String user_id, String user_pw) {
+		String sql = "select user_pw from testuser where user_id=?;";
+		int ok = 0;
 		
 		try {
-			String user_id = null;
-			String user_pw = null;
-			String user_name = null;
 			
 			conn = getConnection();
 			prep = conn.prepareStatement(sql);
 			
-			System.out.println("1");
+			prep.setString(1, user_id);
+			rs = prep.executeQuery();
 			
-			
-			prep.setString(1, vo.getUser_id());
-			prep.setString(2, vo.getUser_pw());
-			prep.setString(3, vo.getUser_name());
-			System.out.println(user_id);
-			System.out.println(user_pw);
-			System.out.println(user_name);
-			
-			rs = prep.executeQuery(sql);
-			
-			
-			//prep.setString(3, vo.getUser_name());
-			//System.out.println(rs.getString("user_id"));
-			
-			while(rs.next()) {
-				//if(rs.getString("user_id").equals() && rs.getString("user_pw")!=null && rs.getString("user_pw").equals(user_pw)) {
-					
-				user_id = rs.getString("user_id");
-				user_pw = rs.getString("user_pw");
-				user_name = rs.getString("user_name");		
-				System.out.println(user_id + user_pw + user_name);
-					
-			}
-		}catch(Exception e){
+				while(rs.next()) {
+					if(user_pw == null && user_id == null) {
+						
+						ok = -1;
+						System.out.println("아이디 또는 비밀번호를 확인-1");
+						
+					}else if(rs.getString(1).equals(user_pw)) {
+						
+	            		ok = 1;
+	            		System.out.println("로그인 성공");
+	            		
+	            	} else {
+	            		
+	            		ok = 0;
+	            		System.out.println("아이디 또는 비밀번호를 확인0");
+	            	}
+				}
+//				if(rs.getString(1).equals(user_id) && rs.getString("user_pw")!=null && 
+//				rs.getString("user_pw").equals(user_pw)) {
+				
+		}catch(SQLException e){
 			e.printStackTrace();
 		}finally {
 			try {
@@ -76,6 +80,16 @@ public class LoginDao {
 				e.printStackTrace();
 			}
 		}
-		//return 0;
+		return ok;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

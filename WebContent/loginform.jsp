@@ -1,9 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-  <% String user_id = request.getParameter("user_id"); 
-  	 session.setAttribute("user_id", "user_id");
-  
-  %>
+  <% session.invalidate(); %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -12,18 +9,38 @@
 <body>
 	<!-- #에 꼭 넘어갈 페이지 넣어주333-->
 <div align="center" style ="line-height:2.3em">
-	<form method="post" action="/Nabong_writer/LoginServlet"> <!-- action값에 저거 말고 로그인 확인하는 폼(Login_ok.java) 만들어야됨-->
+	<form name = "login" method="post" action="/Nabong_writer/LoginServlet" > <!-- action값에 저거 말고 로그인 확인하는 폼(Login_ok.java) 만들어야됨-->
 		<h3> 게시판에 입장하기 위해 로그인이 필요합니다 </h3>
 	<fieldset style="width: 300px">
 		<legend>로그인</legend>
-			
-				<label for ="user_id">아이디 : </label>
-				<input type="text" size = "15" id="user_id" name="user_id"><br>
-				<label for ="user_pw">비밀번호 :</label>
-				<input type="password" size = "15" id="user_pw" name="user_pw"><br>	
-				<input type="submit" name="loginID" value="   로그인   "><br>
+				<a href ="noticeboard.jsp">로그인 안하고 게시판 가기</a><br>
+				<label for ="insert_id">아이디 : </label>
+				<input type="text" size = "15" id="insert_id" name="insert_id"><br>
+				<label for ="insert_pw">비밀번호 :</label>
+				<input type="password" size = "15" id="insert_pw" name="insert_pw"><br>	
+				<input type="button" name="loginID" value="   로그인   " onclick="logincheck()"><br>
 				계정이 없으신가요?? <a href="joinform.jsp" id="join">가입하러 가기</a>
+				<script type="text/javascript">
+				function logincheck(){
+					var form = document.login;
+					
+					if(!form['insert_id'].value) {
+				        alert("어!! 아이디를 빼먹으셨네!");
+				        form['insert_id'].focus();
+				        return false;
+				    } else if(!form['insert_pw'].value){
+				    	alert("어!! 비밀번호를 빼먹으셨네!");
+				        form['insert_pw'].focus();
+				        return false;
+				    }  else{
+				    	alert("안녕하세요!" + form['insert_id'].value + "님!");
+				    	form.submit();
+				    	//else if(session.isNew() || form['insert_id'] == ){
+				    	
+				    	}
+				    }
 				
+				</script>
 	</fieldset>
 	</form>
 </div>
