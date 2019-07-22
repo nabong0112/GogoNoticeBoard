@@ -33,19 +33,11 @@ public class TestServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//요청받아서 jsp를 뿜어내는 역할
-		request.setCharacterEncoding("utf-8");		
 		
-		TestVo vo = new TestVo();
 		
-		vo.setUser_id(request.getParameter("user_id"));
-		vo.setUser_pw(request.getParameter("user_pw"));
-		vo.setUser_name(request.getParameter("user_name"));
 		
-		TestDao dao = new TestDao();
-		//클라이언트가 입력한 데이터를 넘겨줌
-		dao.insert(vo);
-		//join폼으로 이동해서 값을 받아야됨
-		response.sendRedirect("/Nabong_writer/loginform.jsp"); //거 폼에 들어갈라면 서블릿을 호출해야도미ㅋㅋㅋ
+		
+		 //거 폼에 들어갈라면 서블릿을 호출해야도미ㅋㅋㅋ
 		//("/Nabong_writer/login.jsp");
 //		RequestDispatcher rd = request.getRequestDispatcher("/Nabong_writer/noitceboard.jsp");
 //		rd.forward(request, response);
@@ -56,7 +48,68 @@ public class TestServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		request.setCharacterEncoding("utf-8");
+		int check = 0;
+		
+		TestVo vo = new TestVo();
+		String userid = request.getParameter("user_id");
+		String userpw = request.getParameter("user_pw");
+		String username = request.getParameter("user_name");
+		String checkpw = request.getParameter("check_pw");
+		
+		String resultid = userid.trim();
+		String resultpw = userpw.trim();
+		String resultname = username.trim();
+		String resultcheck = checkpw.trim();
+		System.out.println("------------------------------------------");
+		System.out.println(resultid.indexOf(" "));
+		System.out.println(resultpw.indexOf(" "));
+		System.out.println(resultname.indexOf(" "));
+		System.out.println(resultcheck.indexOf(" "));
+		System.out.println("indexof에서 -1이외의 수가 나오면 안됨");
+		System.out.println(resultid.length());
+		System.out.println(resultpw.length());
+		System.out.println(resultname.length());
+		System.out.println(resultcheck.length());
+		System.out.println("아이디는 5글자 이상 12글자 이하 이름은 2글자 이상 7글자 이하 비밀번호는 6글자 이상 10글자 이하");
+		System.out.println(resultid);
+		System.out.println(resultpw);
+		System.out.println(resultname);
+		System.out.println(resultcheck);
+		System.out.println("------------------------------------------");
+		
+		if(resultid.length() == 0 || resultpw.length() == 0 || resultname.length() == 0 || resultcheck.length() == 0) {
+			check = 1;
+			System.out.println(check + " 공백 이외의 값이 없음");
+			response.sendRedirect("/Nabong_writer/joinform.jsp");
+			
+		} else if(resultid.indexOf(" ") != -1 || resultpw.indexOf(" ") != -1 || resultname.indexOf(" ") != -1 || resultcheck.indexOf(" ") != -1) {
+			check = 2;
+			System.out.println(check + " 공백 이외의 값은 없지만 문자 사이에 공백이 존재함");
+			response.sendRedirect("/Nabong_writer/joinform.jsp");
+		} else if(resultid.length() < 4 || resultpw.length() < 5 || resultname.length() < 2 || resultcheck.length() < 5
+				|| resultid.length() > 11 || resultpw.length() > 13 || resultname.length() > 7 || resultcheck.length() > 13) {
+			check = 3;
+			System.out.println(check + " 공백 이외의 값은 없고 문자 사이에 공백이 존재하지 않지만 일정 글자 조건에 맞지 않음");
+			response.sendRedirect("/Nabong_writer/joinform.jsp");
+		} else if(!resultpw.equals(resultcheck)) {
+			check = 4;
+			System.out.println(check + " 공백 이외의 값이 없고 문자 사이에 공백이 존재하지 않으며 일정 글자 조건에 맞으나 비밀번호와 비밀번호 확인란의 내용이 다름");
+			System.out.println(resultpw + " 와  " + resultcheck);
+			response.sendRedirect("/Nabong_writer/joinform.jsp");
+		} else {
+			check = 5;
+			System.out.println(check + " 아 됐다");
+			vo.setUser_id(request.getParameter("user_id"));
+			vo.setUser_pw(request.getParameter("user_pw"));
+			vo.setUser_name(request.getParameter("user_name"));
+			
+			TestDao dao = new TestDao();
+			//클라이언트가 입력한 데이터를 넘겨줌
+			dao.insert(vo);
+			//join폼으로 이동해서 값을 받아야됨
+			response.sendRedirect("/Nabong_writer/loginform.jsp");
+		}
 	}
 
 }

@@ -41,7 +41,7 @@ public class TestDao { //거 ..회원관리dao 게시판 dao이런식으로 나�
 		        	
 		            // Column
 		            // 아이디, 비밀번호, 이름순으로 추가
-		            String sql = "INSERT INTO testuser VALUES (?, ?, ?);";
+		            String sql = "INSERT INTO testuser VALUES (?, ?, ?)";
 		            pstmt = conn.prepareStatement(sql);
 
 		            //물음표의 순번, 적용할 값 삽입
@@ -72,7 +72,7 @@ public class TestDao { //거 ..회원관리dao 게시판 dao이런식으로 나�
 		        
 		        public boolean select(TestVo vo, String user_id, String user_pw) { //-----------------아직 수정중---------------------//
 		        	boolean ok = false;
-		        	TestVo member = null;
+		        	//TestVo member = null;
 		        	
 		        	Connection conn = null;
 		        	//처리된 레코드의 값을 테이블의 형태로  담는 객체 select문에 사용됨 rs에 꼭 저장해야함
@@ -125,7 +125,7 @@ public class TestDao { //거 ..회원관리dao 게시판 dao이런식으로 나�
 			            }
 			        }
 
-			        return true;
+			        return ok;
 		 }
 }
 

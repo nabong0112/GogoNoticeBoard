@@ -9,10 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.websocket.SendResult;
 
 import main.dao.LoginDao;
-import main.dao.TestDao;
 import main.vo.TestVo;
 
 /**
@@ -59,7 +57,7 @@ public class LoginServlet extends HttpServlet {
 		
 		//usercheck의 리턴값으로 어떻게 할지 정할거임
 		int ok = dao.userCheck(vo, login_id, login_pw);
-		
+		//int check = 0;
 		
 		//vo.getUser_pw();	
 		
@@ -69,7 +67,6 @@ public class LoginServlet extends HttpServlet {
 		
 		dao.userCheck(vo, login_id, login_pw);
 		try {
-			
 			if(ok == 1) {
 				//세션 만들기
 				session.setAttribute("insert_id", login_id);
@@ -86,9 +83,12 @@ public class LoginServlet extends HttpServlet {
 				System.out.println("삑 비밀번호 틀림");
 				response.sendRedirect("/Nabong_writer/loginform.jsp");
 				
-			}
-			
-			
+			} else if(ok == -1) {
+				
+				System.out.println("아이디 또는 비밀번호가 일치하지 않음");
+				response.sendRedirect("/Nabong_writer/loginform.jsp");
+				
+			}			
 			
 		} catch(NullPointerException e) {
 			e.printStackTrace();
