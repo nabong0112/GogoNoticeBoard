@@ -7,12 +7,14 @@
     	if(user_id == null) {%>
     	
     		<script type="text/javascript">
-    		alert("잘못된 접근입니다");
+    		alert("엥! 누구세요!");
     		location.href = "loginform.jsp";
 			</script>
     		
     		
     	 <% } %>
+    	 
+  
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -28,11 +30,12 @@
 	function logout(){
 		var form = document.logout;
 		var bool = confirm('로그아웃 하시겠습니까?');
-		alert(bool);
 		if(bool == true){
 			alert("안녕히가세요!");
 			location.href = "loginform.jsp";
 			session.invalidate();
+			
+			
 			
 		} else{
 			location.replace("noticeboard.jsp");
@@ -70,6 +73,18 @@
 					<td>view</td>
 				</tr>
 			</table>
+			<input type="button" name="write" style="height: 50px; width: 100px;" value="글쓰기" onclick= "writecheck()">
+			<script type="text/javascript">
+			function writecheck(){
+				var form = document.write;
+				var bool = confirm('글을 작성하시겠습니까?');
+				if(bool == true){
+				location.href = "writeform.jsp";
+				}else{
+				location.replace("noticeboard.jsp");
+				}
+			}
+			</script>
 		</fieldset>
 	</div>
 	</div>
