@@ -1,6 +1,7 @@
 package main.web;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,7 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import main.dao.LoginDao;
+import main.dao.MemberDAO;
+import main.dao.TestDao;
 import main.vo.TestVo;
 
 /**
@@ -46,48 +48,50 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//세션 생성
 		HttpSession session = request.getSession();
-		
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter out = response.getWriter();
 		
 		//이게 값을 가지고온건가? 이게 로그인창에서 얻어온 정보
 		String login_id = request.getParameter("insert_id");
 		String login_pw = request.getParameter("insert_pw");
 		
+		
 		TestVo vo = new TestVo();
-		LoginDao dao = new LoginDao();
+		MemberDAO dao = new MemberDAO();
 		
 		//usercheck의 리턴값으로 어떻게 할지 정할거임
 		int ok = dao.userCheck(vo, login_id, login_pw);
+		//String login_name = dao.userCheck(vo, login_id, login_pw);
 		//int check = 0;
 		
-		//vo.getUser_pw();	
-		
-		System.out.println("로그인창에서 입력한 정보");
-		System.out.println(login_id);
-		System.out.println(login_pw);	
-		
+		//vo.getUser_pw();
+		//유저의 아이디와 비밀번호가 맞는지 확인하기위해 넘김
 		dao.userCheck(vo, login_id, login_pw);
 		try {
+			//아이디와 비밀번호를 확인한 dao에서 리턴값(ok)을 받아와서 그 값에 알맞은 반응을 보이도록
 			if(ok == 1) {
+				
+				String user_id = vo.getUser_id();
+				String user_pw = vo.getUser_pw();
+				String user_name = vo.getUser_name();
 				//세션 만들기
-				session.setAttribute("insert_id", login_id);
-				
-				String str = (String)session.getAttribute("insert_id");
-				//int check = session.get(dao.userCheck(vo, login_id, login_pw));
-				
-				System.out.println("세션에서 얻어오 ㄴ아이ㅣ디는 " + str);
-		
+				session.setAttribute("user_id", user_id);
+				session.setAttribute("user_name", user_name);
+				session.setAttribute("user_pw", user_pw);
+				//게시판 서블릿으로 전달
 				RequestDispatcher rd = request.getRequestDispatcher("NoticeBoardServelet");
 				rd.forward(request, response);
 			} else if(ok == 0) {
-				
-				System.out.println("삑 비밀번호 틀림");
-				response.sendRedirect("/Nabong_writer/loginform.jsp");
+				out.println("<script type=\"text/javascript\">");
+				out.println("alert('비밀번호가 틀립니다!');");
+				out.println("history.back();");
+				out.println("</script>");
 				
 			} else if(ok == -1) {
-				
-				System.out.println("아이디 또는 비밀번호가 일치하지 않음");
-				response.sendRedirect("/Nabong_writer/loginform.jsp");
-				
+				out.println("<script type=\"text/javascript\">");
+				out.println("alert('없는 아이디이거나, 잘못입력하셨습니다!');");
+				out.println("history.back();");
+				out.println("</script>");
 			}			
 			
 		} catch(NullPointerException e) {

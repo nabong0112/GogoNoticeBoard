@@ -1,8 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-    
-    <% String user_id = (String)session.getAttribute("insert_id");
-    	String user_name = (String)session.getAttribute("user_name"); %>
+    pageEncoding="UTF-8"%>  
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>나봉게시판에 오신것을 환영합니다</title>
+<% String user_id = (String)session.getAttribute("user_id");
+   String user_name = (String)session.getAttribute("user_name"); %>
     	<%
     	if(user_id == null) {%>
     	
@@ -13,18 +16,22 @@
     		
     		
     	 <% } %>
-    	 
-  
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>나봉게시판에 오신것을 환영합니다</title>
+<script type="text/javascript">
+function gowrite(){
+	var bool = confirm('글을 작성하시겠습니까?');
+	if(bool == true){
+	location.href = "writeform.jsp";
+	}else{
+	location.replace("noticeboard.jsp");
+	}
+}
+</script>
 </head>
 <body>
 <div id="container">
 	<div id ="header" style="background-color:#FFA777;height: 50px">  <!-- 로그아웃 action값에 저거 말고 로그인 확인하는 폼(logout_ok.java) 만들어야됨 세션 끊으면서 안녕히가세요! 라는 alter인가-->
 	<b>회원 <%= user_id %></b>님 안녕하세요! <a href="myPage.jsp" name="mymenu">내 정보</a> 
-	<input type="button" name="logout" value ="로그아웃" onclick="logout()">
+	<input type="button" name="logout" value ="로그아웃" onclick="javascript:logout();">
 	</div>
 	<script type="text/javascript">
 	function logout(){
@@ -73,18 +80,9 @@
 					<td>view</td>
 				</tr>
 			</table>
-			<input type="button" name="write" style="height: 50px; width: 100px;" value="글쓰기" onclick= "writecheck()">
-			<script type="text/javascript">
-			function writecheck(){
-				var form = document.write;
-				var bool = confirm('글을 작성하시겠습니까?');
-				if(bool == true){
-				location.href = "writeform.jsp";
-				}else{
-				location.replace("noticeboard.jsp");
-				}
-			}
-			</script>
+			<button style="height: 50px; width: 100px;" onClick="javascript:gowrite();">글쓰기</button>
+			<!-- <input type="button" name="write" style="height: 50px; width: 100px;"  onClick= "javascript:write();">글쓰기</ -->
+
 		</fieldset>
 	</div>
 	</div>

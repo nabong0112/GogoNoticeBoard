@@ -1,6 +1,7 @@
 package main.web;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,6 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.jasper.tagplugins.jstl.core.Out;
+
+import main.dao.MemberDAO;
 import main.dao.TestDao;
 import main.vo.TestVo;
 
@@ -49,9 +53,14 @@ public class TestServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		request.setCharacterEncoding("utf-8");
+		//자바스크립트 사용하기
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter out = response.getWriter();
 		int check = 0;
 		
 		TestVo vo = new TestVo();
+		MemberDAO dao = new MemberDAO();
+		
 		String userid = request.getParameter("user_id");
 		String userpw = request.getParameter("user_pw");
 		String username = request.getParameter("user_name");
@@ -81,34 +90,61 @@ public class TestServlet extends HttpServlet {
 		if(resultid.length() == 0 || resultpw.length() == 0 || resultname.length() == 0 || resultcheck.length() == 0) {
 			check = 1;
 			System.out.println(check + " 공백 이외의 값이 없음");
-			response.sendRedirect("/Nabong_writer/joinform.jsp");
+			out.println("<script type=\"text/javascript\">");
+			out.println("alert('내용을 입력해주세요');");
+			out.println("history.back();");
+			out.println("</script>");
 			
 		} else if(resultid.indexOf(" ") != -1 || resultpw.indexOf(" ") != -1 || resultname.indexOf(" ") != -1 || resultcheck.indexOf(" ") != -1) {
 			check = 2;
 			System.out.println(check + " 공백 이외의 값은 없지만 문자 사이에 공백이 존재함");
-			response.sendRedirect("/Nabong_writer/joinform.jsp");
+			out.println("<script type=\"text/javascript\">");
+			out.println("alert('공백은 입력할 수 없습니다');");
+			out.println("history.back();");
+			out.println("</script>");
 		} else if(resultid.length() < 4 || resultpw.length() < 5 || resultname.length() < 2 || resultcheck.length() < 5
 				|| resultid.length() > 11 || resultpw.length() > 13 || resultname.length() > 7 || resultcheck.length() > 13) {
 			check = 3;
 			System.out.println(check + " 공백 이외의 값은 없고 문자 사이에 공백이 존재하지 않지만 일정 글자 조건에 맞지 않음");
-			response.sendRedirect("/Nabong_writer/joinform.jsp");
+			out.println("<script type=\"text/javascript\">");
+			out.println("alert('해당 글자 조건에 맞게 입력해 주세요');");
+			out.println("history.back();");
+			out.println("</script>");
 		} else if(!resultpw.equals(resultcheck)) {
 			check = 4;
 			System.out.println(check + " 공백 이외의 값이 없고 문자 사이에 공백이 존재하지 않으며 일정 글자 조건에 맞으나 비밀번호와 비밀번호 확인란의 내용이 다름");
 			System.out.println(resultpw + " 와  " + resultcheck);
-			response.sendRedirect("/Nabong_writer/joinform.jsp");
+			out.println("<script type=\"text/javascript\">");
+			out.println("alert('비밀번호와 확인란이 맞지 않습니다');");
+			out.println("history.back();");
+			out.println("</script>");
 		} else {
 			check = 5;
-			System.out.println(check + " 아 됐다");
-			vo.setUser_id(request.getParameter("user_id"));
-			vo.setUser_pw(request.getParameter("user_pw"));
-			vo.setUser_name(request.getParameter("user_name"));
+			int idcheck = dao.idcheck(vo);
 			
-			TestDao dao = new TestDao();
-			//클라이언트가 입력한 데이터를 넘겨줌
-			dao.insert(vo);
-			//join폼으로 이동해서 값을 받아야됨
-			response.sendRedirect("/Nabong_writer/loginform.jsp");
+			System.out.println(check + " 아 됐다 이제 중복확인 하자");
+			vo.setUser_id(request.getParameter("user_id"));			
+			dao.idcheck(vo);
+			System.out.println(idcheck);
+			if(idcheck == 0) {
+				vo.setUser_id(request.getParameter("user_id"));
+				vo.setUser_pw(request.getParameter("user_pw"));
+				vo.setUser_name(request.getParameter("user_name"));
+				//클라이언트가 입력한 데이터를 넘겨줌
+				dao.insert(vo);
+				//join폼으로 이동해서 값을 받아야됨
+				out.println("<script type=\"text/javascript\">");
+				out.println("alert('회원가입을 축하드립니다!');");
+				out.println("</script>");
+				response.sendRedirect("/Nabong_writer/loginform.jsp");
+			} else {
+				System.out.println("중복 아이디");
+				out.println("<script type=\"text/javascript\">");
+				out.println("alert('이미 있는 아이디입니다');");
+				out.println("history.back();");
+				out.println("</script>");
+			}
+			
 		}
 	}
 

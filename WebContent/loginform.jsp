@@ -33,7 +33,7 @@
 				        form['insert_pw'].focus();
 				        return false;
 				    }  else{
-				    	alert("안녕하세요!" + form['insert_id'].value + "님!");
+				    	//alert("안녕하세요!" + form['insert_id'].value + "님!");
 				    	form.submit();
 				    	//else if(session.isNew() || form['insert_id'] == ){
 				    	

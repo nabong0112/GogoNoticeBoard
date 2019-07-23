@@ -34,7 +34,6 @@ public class NoticeBoardServelet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		
 		response.sendRedirect("noticeboard.jsp");
 		
 		

@@ -6,6 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.servlet.http.HttpSession;
+
+import org.apache.catalina.connector.Request;
+
 import main.vo.TestVo;
 
 public class LoginDao {
@@ -38,7 +42,7 @@ public class LoginDao {
     }
 	
 	public int userCheck(TestVo vo, String user_id, String user_pw) {
-		String sql = "select user_pw from testuser where user_id=?;";
+		String sql = "select * from testuser where user_id=?;";
 		int ok = 0;
 		
 		try {
@@ -55,15 +59,19 @@ public class LoginDao {
 						ok = -1;
 						System.out.println("아이디 또는 비밀번호를 확인-1");
 						
-					}else if(rs.getString(1).equals(user_pw)) {
+					}else if(rs.getString(2).equals(user_pw)) {
 						
-	            		ok = 1;
 	            		System.out.println("로그인 성공");
+	            		vo.setUser_id(rs.getString(1));
+	            		vo.setUser_pw(rs.getString(2));
+	            		vo.setUser_name(rs.getString(3));
+	            		ok = 1;
 	            		
 	            	} else {
 	            		
 	            		ok = 0;
 	            		System.out.println("아이디 또는 비밀번호를 확인0");
+	            		System.out.println(rs.getString(3));
 	            	}
 				}
 //				if(rs.getString(1).equals(user_id) && rs.getString("user_pw")!=null && 

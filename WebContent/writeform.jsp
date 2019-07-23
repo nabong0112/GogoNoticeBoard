@@ -1,14 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<% String user_id = (String)session.getAttribute("insert_id");
+<% String user_id = (String)session.getAttribute("user_id");
 %>
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<%
+    	if(user_id == null) {%>
+    	
+    		<script type="text/javascript">
+    		alert("엥! 누구세요!");
+    		location.href = "loginform.jsp";
+			</script>
+    		
+    		
+    	 <% } %>
 </head>
 <body>
 <div align="center" style ="line-height:2.3em">
@@ -20,7 +29,8 @@
 				내용 <br>
 				<textarea name ="text" id="text" style="resize: none; width: 70%; height: 500px; text-align: left;" placeholder="내용을 입력하세요"></textarea><br>
 				
-				<input type="button" name="write" value="등록하기" onclick="update()">
+				<input type="button" name="write" value="등록하기" onclick="javascript:update();">
+				<input type="button" name="back" value="돌아가기" onclick="javascript:back();">
 				<script type="text/javascript">
 				function update(){
 					var form = document.write;
@@ -45,6 +55,11 @@
 					}
 				}
 				</script>	
+				<script type="text/javascript">
+				function back(){
+					location.href="noticeboard.jsp"
+				}
+				</script>
 				
 	</fieldset>
 	</form>

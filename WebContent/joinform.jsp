@@ -1,15 +1,11 @@
 <%@page import="com.sun.org.apache.xpath.internal.functions.Function"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <% 
-		String id = request.getParameter("user_id");
-		String pw = request.getParameter("user_pw");
-		String checkpw = request.getParameter("check_pw");
-		String name = request.getParameter("user_name");
-	%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<%	String usercheck = request.getParameter("usercheckk"); 
+//int check = Integer.parseInt(usercheck); %>
 <title>Join View</title>
 </head>
 <body>
@@ -27,9 +23,10 @@
 				<input type="password" size = "20" id="user_pw" name="user_pw" placeholder="5글자 이상 12글자 이하"><br>
 				<label for ="loginPW_ok">비밀번호 확인 :</label>
 				<input type="password" size = "20" id="check_pw" name="check_pw" placeholder="비밀번호와 똑같이 입력"><br>
-				<input type="button" value="   가입하기   " onclick="check()"><br>
-				<b>앗 ! </b>생각해보니 이미 계정이 있으신가요? <a href="loginform.jsp"><b>로그인 하러 가기</b></a>
-				
+				<input type="button" value="   가입하기   " onclick="javascript:check();"><br>
+				<b>앗 ! </b>생각해보니 이미 계정이 있으신가요? <a href="loginform.jsp"><b>로그인 하러 가기</b></a><br>
+				<%-- <%= check %> --%>
+				<%= usercheck %>
 				<script type="text/javascript">
 				function check() {
 				    var form = document.join;

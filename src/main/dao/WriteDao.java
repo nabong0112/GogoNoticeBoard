@@ -49,7 +49,7 @@ private Connection getConnection() throws SQLException {
 	            pstmt.setString(2, vo.getText());
 	            //select문은 excutequery를 사용해야함
 	            pstmt.executeUpdate();
-
+	            
 	            }
 	        catch (SQLException e) {
 	            e.printStackTrace();
