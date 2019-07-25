@@ -1,15 +1,17 @@
 package main.web;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import main.dao.WriteDao;
 import main.vo.WriteVo;
-import sun.nio.cs.HistoricallyNamedCharset;
 
 /**
  * Servlet implementation class WriteServlet
@@ -40,11 +42,14 @@ public class WriteServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//글쓰기에서 가지고온 문자들
-		request.setCharacterEncoding("utf-8");	
+		request.setCharacterEncoding("utf-8");
+		WriteDao dao = new WriteDao();
 		WriteVo vo = new WriteVo();
+		HttpSession session = request.getSession();
 		
 		String title = request.getParameter("title");
 		String text = request.getParameter("text");
+		String user = (String)session.getAttribute("user_id");
 		
 		int check = 1;
 		//양쪽 공백 제거
@@ -61,15 +66,35 @@ public class WriteServlet extends HttpServlet {
 			System.out.println(title2 + "에 공백만 들어있음");
 			System.out.println(text2 + "에 공백만 들어있음");
 			response.sendRedirect("/Nabong_writer/writeform.jsp");
-		} else {
-			
-			vo.setTitle(title2);
-			vo.setText(text2);
-			
-			WriteDao dao = new WriteDao();
+		} else {		
+			vo.setBoard_title(title2);
+			vo.setBoard_text(text2);
+			vo.setBoard_user(user);
+				
 			dao.insertText(vo);
+			
+			ArrayList<WriteVo>board = dao.selectText();
+			
+			if(board != null) {
+				for(WriteVo i: board) {
+					System.out.println("-------------목록---------------");
+					System.out.println(i.getBoard_no()+ " ");
+					System.out.println(i.getBoard_title()+ " ");
+					System.out.println(i.getBoard_text()+ " ");
+					System.out.println(i.getBoard_user()+ " ");
+					System.out.println(i.getBoard_time()+ " ");
+					System.out.println(i.getBoard_view()+ " ");	
+					System.out.println("----------------------------");
+				}
+			}else {
+				System.out.println("없음");
+			}
+			
 			response.sendRedirect("/Nabong_writer/noticeboard.jsp");
+			
+			
 		}
+		
 		
 		
 		

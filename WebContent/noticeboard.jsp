@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>  
+<%@ page import="main.dao.WriteDao"%>
+<%@ page import="main.vo.WriteVo"%>
+<%@ page import="java.util.ArrayList"%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>나봉게시판에 오신것을 환영합니다</title>
-<% String user_id = (String)session.getAttribute("user_id");
-   String user_name = (String)session.getAttribute("user_name"); %>
+<% String user_id = (String)session.getAttribute("user_id"); %>
     	<%
     	if(user_id == null) {%>
     	
@@ -15,7 +17,7 @@
 			</script>
     		
     		
-    	 <% } %>
+    	 <% }  %>
 <script type="text/javascript">
 function gowrite(){
 	var bool = confirm('글을 작성하시겠습니까?');
@@ -64,23 +66,60 @@ function gowrite(){
 		</fieldset>
 		
 	</div>
-	<div id="border" style="background-color: #EEEEEF;height: 733px;">
-		<fieldset style="height: 700px">
-			<br><table align="center" >
+	<div id="border" style="background-color: #EEEEEF; height: 733px; align-content:center;">
+		<fieldset style="height: 700px; line-height:2.3em; align-content: center;">
+			<br><table style="line-height:2.3em;" align="center">
 				<tr align="center" bgcolor="gray">
-				<th width="80"><b>번호</b></th>
-				<th width="640"><b>제목</b></th>
-				<th width="100"><b>작성자</b></th>
-				<th width="80"><b>조회수</b></th> 
+					<th width="80"><b>번호</b></th>
+					<th width="640"><b>제목</b></th>
+					<th width="100"><b>작성자</b></th>
+					<th width="130"><b>작성 일자</b></th>
+					<th width="80"><b>조회수</b></th> 
 				</tr>
-				<tr align="center">
-					<td>border_no</td>
-					<td>border_name</td>
-					<td>user_id</td>
-					<td>view</td>
-				</tr>
+				<% //dao를 선언하고 배열을 불러와서 값이 있으면
+				WriteVo vo = new WriteVo();
+				WriteDao dao = new WriteDao(); 
+				ArrayList<WriteVo>board = dao.selectText();
+				if(!board.isEmpty()){ 
+					for(/*WriteVo i: board*/ int i = 0;i < board.size();i++) {
+						%>
+						<tr align="center">
+							<!-- href를 서블릿으로 바꿔야ㅚㄹ거같은데? -->
+							<td><a href ="#" onClick="javascript:goservlet();"><%= board.get(i).getBoard_no()%></a></td>
+							<td><a href ="Readform.jsp?board_no=<%= board.get(i).getBoard_no() %>"><%= board.get(i).getBoard_title()%></a></td>
+							<td><%= board.get(i).getBoard_user()%></td>
+							<td><%= board.get(i).getBoard_time()%></td>
+							<td><%= board.get(i).getBoard_view()%></td>
+							 <% int a = board.get(i).getBoard_no();
+							 	System.out.println(a);
+							 	System.out.println("-----------------------------");
+							 %>
+						
+						<%  } 
+				 } else { %>
+				
+					<tr align="center">
+						<td colspan="5"><b> 등록된 글이 없습니다. 아래 글쓰기를 눌러 첫 게시글의 주인공이 되어보세요!</b> </td>
+					
+				<% } %>
+				<script type="text/javascript">
+							function goservlet(){
+								
+								<% 
+								if(vo.getBoard_no() != 2){
+								int board_no = board.get(0).getBoard_no();
+								System.out.println(board_no);
+								}
+								%>
+								
+								location.href = "/Nabong_writer/ReadServlet";
+							}
+							</script>
+			</tr>
 			</table>
-			<button style="height: 50px; width: 100px;" onClick="javascript:gowrite();">글쓰기</button>
+			<center>
+			<br><br><button style="height: 50px; width: 100px;" onClick="javascript:gowrite();">글쓰기</button>
+			</center>
 			<!-- <input type="button" name="write" style="height: 50px; width: 100px;"  onClick= "javascript:write();">글쓰기</ -->
 
 		</fieldset>

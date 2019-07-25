@@ -36,8 +36,7 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		
+		//response.getWriter().append("Served at: ").append(request.getContextPath());	
 		
 		
 	}
@@ -48,13 +47,13 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//세션 생성
 		HttpSession session = request.getSession();
+		//자바스크립트 생성할수 있게 해주는거
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
 		
 		//이게 값을 가지고온건가? 이게 로그인창에서 얻어온 정보
 		String login_id = request.getParameter("insert_id");
 		String login_pw = request.getParameter("insert_pw");
-		
 		
 		TestVo vo = new TestVo();
 		MemberDAO dao = new MemberDAO();
@@ -81,6 +80,7 @@ public class LoginServlet extends HttpServlet {
 				//게시판 서블릿으로 전달
 				RequestDispatcher rd = request.getRequestDispatcher("NoticeBoardServelet");
 				rd.forward(request, response);
+				
 			} else if(ok == 0) {
 				out.println("<script type=\"text/javascript\">");
 				out.println("alert('비밀번호가 틀립니다!');");

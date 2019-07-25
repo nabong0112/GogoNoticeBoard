@@ -2,25 +2,54 @@ package main.vo;
 
 public class WriteVo {
 
-	private String title;
-	private String text;
+	int board_no;
+	String board_title;
+	String board_text;
+	String board_user;
+	String board_time;
+	int board_view;
 	
-	
-	public String getTitle() {
-		return title;
+	public int getBoard_no() {
+		return board_no;
 	}
-	public void setTitle(String title) {
-		this.title = title;
+	public void setBoard_no(int board_no) {
+		this.board_no = board_no;
 	}
-	public String getText() {
-		return text;
+	public String getBoard_title() {
+		return board_title;
 	}
-	public void setText(String text) {
-		this.text = text;
+	public void setBoard_title(String board_title) {
+		this.board_title = board_title;
+	}
+	public String getBoard_text() {
+		return board_text;
+	}
+	public void setBoard_text(String board_text) {
+		this.board_text = board_text;
+	}
+	public String getBoard_user() {
+		return board_user;
+	}
+	public void setBoard_user(String board_user) {
+		this.board_user = board_user;
+	}
+	public String getBoard_time() {
+		return board_time;
+	}
+	public void setBoard_time(String board_time) {
+		this.board_time = board_time;
+	}
+	public int getBoard_view() {
+		return board_view;
+	}
+	public void setBoard_view(int board_view) {
+		this.board_view = board_view;
 	}
 	
 	@Override
 	public String toString() {
-		return "WriteVo [title=" + title + ", text=" + text + "]";
+		return "WriteVo [board_no=" + board_no + ", board_title=" + board_title + ", board_text=" + board_text
+				+ ", board_user=" + board_user + ", board_time=" + board_time + ", board_view=" + board_view + "]";
 	}
+	
 }

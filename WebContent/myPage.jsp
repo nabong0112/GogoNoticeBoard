@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<% String myid = (String) session.getAttribute("user_id"); 
+<% String user_id = (String) session.getAttribute("user_id"); 
 	String myname = (String)session.getAttribute("user_name");
 	String mypw = (String)session.getAttribute("user_pw");
 %>
@@ -12,10 +12,32 @@
 <title>마이페이지</title>
 </head>
 <body>
+<div id="container">
+	<div id ="header" style="background-color:#FFFFFE;height: 50px">  <!-- 로그아웃 action값에 저거 말고 로그인 확인하는 폼(logout_ok.java) 만들어야됨 세션 끊으면서 안녕히가세요! 라는 alter인가-->
+	<b>회원 <%= user_id %></b>님 안녕하세요! <a href="myPage.jsp" name="mymenu">내 정보</a> 
+	<input type="button" name="logout" value ="로그아웃" onclick="javascript:logout();">
+	</div>
+	<script type="text/javascript">
+	function logout(){
+		var form = document.logout;
+		var bool = confirm('로그아웃 하시겠습니까?');
+		if(bool == true){
+			alert("안녕히가세요!");
+			location.href = "loginform.jsp";
+			session.invalidate();
+			
+			
+			
+		} else{
+			location.replace("#");
+		}
+	}
+	
+	</script>
 <div align="center">
 <fieldset style="width: 550px" align="center">
 <legend>내 정보</legend>
-	내 아이디 : <b> <%= myid %> </b>  <br>
+	내 아이디 : <b> <%= user_id %> </b>  <br>
 	내 이름 : <b> <%= myname %> </b><br>
 	내 비밀번호 : <b> <%= mypw %> </b><br>
 	 <button onClick="javascript:Update();">변경하기</button> <button onClick="">탈퇴하기</button>
@@ -29,5 +51,6 @@
 			location.href = "changeform.jsp";
 		}
 	</script>
+	</div>
 </body>
 </html>
