@@ -1,23 +1,26 @@
 package main.web;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import main.dao.WriteDao;
+
 /**
- * Servlet implementation class Servlet001
+ * Servlet implementation class DeleteServlet
  */
-@WebServlet("/Servlet001")
-public class Servlet001 extends HttpServlet {
+@WebServlet("/DeleteServlet")
+public class DeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Servlet001() {
+    public DeleteServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -27,7 +30,14 @@ public class Servlet001 extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		WriteDao dao = new WriteDao();
+		
+		int no =  Integer.parseInt(request.getParameter("board_no"));
+		
+		dao.deleteText(no);
+		dao.incrementSort(no);
+		System.out.println("삭제 완료");
+		response.sendRedirect("/Nabong_writer/noticeboard.jsp");
 	}
 
 	/**
@@ -35,21 +45,9 @@ public class Servlet001 extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
-
-	/**
-	 * @see HttpServlet#doPut(HttpServletRequest, HttpServletResponse)
-	 */
-	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-	}
-
-	/**
-	 * @see HttpServlet#doDelete(HttpServletRequest, HttpServletResponse)
-	 */
-	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		
+		
+		
 	}
 
 }

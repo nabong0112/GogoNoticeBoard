@@ -31,7 +31,10 @@ function gowrite(){
 </head>
 <body>
 <div id="container">
-	<div id ="header" style="background-color:#FFA777;height: 50px">  <!-- 로그아웃 action값에 저거 말고 로그인 확인하는 폼(logout_ok.java) 만들어야됨 세션 끊으면서 안녕히가세요! 라는 alter인가-->
+	<div id ="header" style="background-color:#E2E2E2; height: 110px; text-align: right;">
+	<div id = "main" style="background-color:#E2E2E2; height: 80px; text-align: left;">
+	<a href="noticeboard.jsp"><img src="/Nabong_writer/WebContent/image/notice.png" width="200px" height="100px"></a>
+	</div>
 	<b>회원 <%= user_id %></b>님 안녕하세요! <a href="myPage.jsp" name="mymenu">내 정보</a> 
 	<input type="button" name="logout" value ="로그아웃" onclick="javascript:logout();">
 	</div>
@@ -52,11 +55,13 @@ function gowrite(){
 	}
 	
 	</script>
-	<div id="content" style="background-color: #EEEEEE;height: 883px;width: 1900px;float: left;">
-	<div id ="menu" style="background-color: #FFD700;height: 883px;width: 145px;float: left;">
+	<div id="content" style="background-color: #E3E3E3;height: 883px;width: 1900px;float: left;">
+	<div id ="menu" style="background-color: #E3E3E3;height: 883px;width: 145px;float: left;">
+	<fieldset style="height: 95%;">
 	<b>Menu</b> <br>
 	HTML<br>
 	CSS<br>
+	</fieldset>
 	</div>
 	<div id="serch" style="background-color: #EEEEEF;height: 130px;">
 		<fieldset align="center">
@@ -85,18 +90,15 @@ function gowrite(){
 						%>
 						<tr align="center">
 							<!-- href를 서블릿으로 바꿔야ㅚㄹ거같은데? -->
-							<td><a href ="#" onClick="javascript:goservlet();"><%= board.get(i).getBoard_no()%></a></td>
-							<td><a href ="Readform.jsp?board_no=<%= board.get(i).getBoard_no() %>"><%= board.get(i).getBoard_title()%></a></td>
+							<td><a href ="/Nabong_writer/ReadServlet?board_no=<%= board.get(i).getBoard_no() %>"><%= board.get(i).getBoard_no()%></a></td>
+							<td><a href ="/Nabong_writer/ReadServlet?board_no=<%= board.get(i).getBoard_no() %>"><%= board.get(i).getBoard_title()%></a></td>
 							<td><%= board.get(i).getBoard_user()%></td>
 							<td><%= board.get(i).getBoard_time()%></td>
 							<td><%= board.get(i).getBoard_view()%></td>
-							 <% int a = board.get(i).getBoard_no();
-							 	System.out.println(a);
-							 	System.out.println("-----------------------------");
-							 %>
 						
 						<%  } 
-				 } else { %>
+				System.out.println("-----------------"); 
+				} else { %>
 				
 					<tr align="center">
 						<td colspan="5"><b> 등록된 글이 없습니다. 아래 글쓰기를 눌러 첫 게시글의 주인공이 되어보세요!</b> </td>
@@ -104,14 +106,6 @@ function gowrite(){
 				<% } %>
 				<script type="text/javascript">
 							function goservlet(){
-								
-								<% 
-								if(vo.getBoard_no() != 2){
-								int board_no = board.get(0).getBoard_no();
-								System.out.println(board_no);
-								}
-								%>
-								
 								location.href = "/Nabong_writer/ReadServlet";
 							}
 							</script>

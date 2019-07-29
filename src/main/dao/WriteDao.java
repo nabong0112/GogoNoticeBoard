@@ -15,6 +15,12 @@ public class WriteDao {
 	PreparedStatement pstmt;
 	 
 	//prep = conn.prepareStatement("insert into testuser(user_id, user_pw, user_name) value(?, ?, ?)");
+	
+	/*
+	============================================================================================================================= 
+	===============================================데이터베이스와 연동하기위해 적은 곳========================================================
+	============================================================================================================================= 
+	*/ 
 
 private Connection getConnection() throws SQLException {
     Connection conn = null;
@@ -33,7 +39,11 @@ private Connection getConnection() throws SQLException {
     //연결한것을 반환시킴
     return conn;
 }
-	
+/*
+	============================================================================================================================= 
+	===============================================글 작성후 데이터베이스에 저장============================================================ 
+	============================================================================================================================= 
+*/ 
 	 public void insertText(WriteVo vo) {	//게시판 데이터베이스에 글 저장	
 		 	Connection conn = null;
 
@@ -72,7 +82,11 @@ private Connection getConnection() throws SQLException {
 			            }	           
 	        }
 	 }
-	 
+	 /*
+	============================================================================================================================= 
+	===============================================게시판에 글 불러오기 위한 Dao=========================================================== 
+	============================================================================================================================= 
+		*/ 
 	 public ArrayList<WriteVo> selectText() { //여기는 게시판 잡는 곳
 		 
 		 ArrayList<WriteVo>border = new ArrayList<WriteVo>();
@@ -121,7 +135,11 @@ private Connection getConnection() throws SQLException {
 	        }    
 			return border;
 	 }
-	 
+	/*
+	============================================================================================================================= 
+	===============================================글목록 불러오는 Dao================================================================= 
+	============================================================================================================================= 
+	*/ 
 	 public WriteVo getBoard(int board_no) { //글목록 불러오기
 		int ok = 0;
 		 Connection conn = null;
@@ -131,9 +149,7 @@ private Connection getConnection() throws SQLException {
 		 
 	        try {
 	        	
-	        	conn = getConnection();
-	        	
-	        	
+	        	conn = getConnection();	
 	            
 	            pstmt = conn.prepareStatement(sql);
 	            
@@ -149,13 +165,16 @@ private Connection getConnection() throws SQLException {
 	            	vo.setBoard_user(rs.getString(4));
 	            	vo.setBoard_time(rs.getString(5));
 	            	vo.setBoard_view(rs.getInt(6));	
+	            	
 	            	String text = vo.getBoard_text();
+	            	System.out.println("========dao구간========");
 	            	System.out.println(vo.getBoard_no());
 	            	System.out.println(text);
 	            	System.out.println(vo.getBoard_title());
 	            	System.out.println(vo.getBoard_user());
 	            	System.out.println(vo.getBoard_time());
 	            	System.out.println(vo.getBoard_view());
+	            	System.out.println("========dao구간 끝========");
 	            	
 	            	
 	        	} else {
@@ -183,10 +202,14 @@ private Connection getConnection() throws SQLException {
 	        return vo;
 	 }
 	 
-	 
+	 /*
+		============================================================================================================================= 
+		===============================================글 조회수 증가시키는 Dao================================================================= 
+		============================================================================================================================= 
+		*/  
 	 
 	 public void view(int board_no) { //조회수
-		 int view = 0;
+		
 		 Connection conn = null;
 	        try {
 	        	conn = getConnection();
@@ -200,7 +223,45 @@ private Connection getConnection() throws SQLException {
 	            pstmt.executeUpdate();
 	            
 	        	
+	        } 
+	        catch (SQLException e) {
+	            e.printStackTrace();
+	        } 
+	        finally {
+	        	try {
+	                if( conn != null ) {
+		                 conn.close();
+			                }
+			                if( pstmt != null ) {
+			                    pstmt.close();
+			                }
+			            }
+			            catch(SQLException e) {
+			                e.printStackTrace();
+			            }	           
+	        }    
+	 }
+	 /*
+		============================================================================================================================= 
+		===============================================글 수정하는 Dao=================================================================== 
+		============================================================================================================================= 
+		*/  
+	 
+	 public void updateText(int board_no, String title, String text) {
+		 Connection conn = null;
+	        try {
+	        	conn = getConnection();
 	        	
+	        	String sql = "Update noticeboard set board_title =?, board_text =? where board_no = ?";
+	        	
+	        	pstmt = conn.prepareStatement(sql);
+	            
+	        	pstmt.setString(1, title);
+	        	pstmt.setString(2, text);
+	            pstmt.setInt(3, board_no);
+	            
+	            pstmt.executeUpdate();
+	            
 	        	
 	        } 
 	        catch (SQLException e) {
@@ -221,10 +282,83 @@ private Connection getConnection() throws SQLException {
 	        }    
 	 }
 	 
+	 /*
+		============================================================================================================================= 
+		===============================================글 삭제하는 Dao=================================================================== 
+		============================================================================================================================= 
+		*/   
 	 
-	 
-	 
-	 
+	 public void deleteText(int board_no) {
+		 
+		 Connection conn = null;
+		 
+	        try {
+	        	conn = getConnection();
+	        	
+	        	String sql = "Delete from noticeboard where board_no =?";
+	        	
+	        	pstmt = conn.prepareStatement(sql);
+	            
+	            pstmt.setInt(1, board_no);
+	            
+	            pstmt.executeUpdate();
+	            
+	        	
+	        } 
+	        catch (SQLException e) {
+	            e.printStackTrace();
+	        } 
+	        finally {
+	        	try {
+	                if( conn != null ) {
+		                 conn.close();
+			                }
+			                if( pstmt != null ) {
+			                    pstmt.close();
+			                }
+			            }
+			            catch(SQLException e) {
+			                e.printStackTrace();
+			            }	           
+	        }    
+	 }
+	 /*
+		============================================================================================================================= 
+		==============================================번호 정렬하는 Dao=================================================================== 
+		============================================================================================================================= 
+		*/ 
+	 public void incrementSort(int board_no) {// 이건 내일이나 하자.............................
+		 Connection conn = null;
+	        try {
+	        	conn = getConnection();
+	        	
+	        	String sql = "alter table noticeboard auto_increment= ?;";
+	        	
+	        	pstmt = conn.prepareStatement(sql);
+	            
+	            pstmt.setInt(1, board_no-1);
+	            
+	            pstmt.executeUpdate();
+	            
+	        	
+	        } 
+	        catch (SQLException e) {
+	            e.printStackTrace();
+	        } 
+	        finally {
+	        	try {
+	                if( conn != null ) {
+		                 conn.close();
+			                }
+			                if( pstmt != null ) {
+			                    pstmt.close();
+			                }
+			            }
+			            catch(SQLException e) {
+			                e.printStackTrace();
+			            }	           
+	        }    
+	 }
 	 
 	 
 	 
