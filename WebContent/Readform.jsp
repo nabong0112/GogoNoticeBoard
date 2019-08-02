@@ -10,6 +10,7 @@
 <html>
 <head>
 <%
+	int adfafsd = 1;
 	WriteDao dao = new WriteDao();
 	WriteVo vo = new WriteVo();
 	CommentVo cvo = new CommentVo();
