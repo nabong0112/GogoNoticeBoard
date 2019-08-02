@@ -1,6 +1,7 @@
 package main.web;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -42,6 +43,8 @@ public class WriteServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//글쓰기에서 가지고온 문자들
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter out = response.getWriter();
 		request.setCharacterEncoding("utf-8");
 		WriteDao dao = new WriteDao();
 		WriteVo vo = new WriteVo();
@@ -50,8 +53,7 @@ public class WriteServlet extends HttpServlet {
 		String title = request.getParameter("title");
 		String text = request.getParameter("text");
 		String user = (String)session.getAttribute("user_id");
-		
-		int check = 1;
+
 		//양쪽 공백 제거
 		String title2 = title.trim();
 		String text2 = text.trim();
@@ -66,7 +68,7 @@ public class WriteServlet extends HttpServlet {
 			System.out.println(title2 + "에 공백만 들어있음");
 			System.out.println(text2 + "에 공백만 들어있음");
 			response.sendRedirect("/Nabong_writer/writeform.jsp");
-		} else {		
+		} else {
 			vo.setBoard_title(title2);
 			vo.setBoard_text(text2);
 			vo.setBoard_user(user);
@@ -89,7 +91,9 @@ public class WriteServlet extends HttpServlet {
 			}else {
 				System.out.println("없음");
 			}
-			
+			out.println("<script type=\"text/javascript\">");
+			out.println("alert('글이 등록되었습니다!');");
+			out.println("</script>");
 			response.sendRedirect("/Nabong_writer/noticeboard.jsp");
 			
 			
