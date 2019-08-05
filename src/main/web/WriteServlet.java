@@ -67,10 +67,14 @@ public class WriteServlet extends HttpServlet {
 		if(title2.length() == 0 || text2.length() == 0) {
 			System.out.println(title2 + "에 공백만 들어있음");
 			System.out.println(text2 + "에 공백만 들어있음");
+			out.println("<script type='text/javascript'>");
+			out.println("alert('내용을 올바르게 입력해 주세요!');");
+			out.println("history.back();");
+			out.println("</script>");
 			response.sendRedirect("/Nabong_writer/writeform.jsp");
 		} else {
-			vo.setBoard_title(title2);
-			vo.setBoard_text(text2);
+			vo.setBoard_title(title);
+			vo.setBoard_text(text);
 			vo.setBoard_user(user);
 				
 			dao.insertText(vo);
@@ -79,20 +83,22 @@ public class WriteServlet extends HttpServlet {
 			
 			if(board != null) {
 				for(WriteVo i: board) {
-					System.out.println("-------------목록---------------");
+					System.out.println("-------------글 목록 : 총 " + i + "개---------------");
 					System.out.println(i.getBoard_no()+ " ");
 					System.out.println(i.getBoard_title()+ " ");
 					System.out.println(i.getBoard_text()+ " ");
 					System.out.println(i.getBoard_user()+ " ");
 					System.out.println(i.getBoard_time()+ " ");
 					System.out.println(i.getBoard_view()+ " ");	
-					System.out.println("----------------------------");
+					System.out.println("---------------글목록 끝---------------------------");
 				}
 			}else {
 				System.out.println("없음");
 			}
-			out.println("<script type=\"text/javascript\">");
+			
+			out.println("<script type='text/javascript'>");
 			out.println("alert('글이 등록되었습니다!');");
+			
 			out.println("</script>");
 			response.sendRedirect("/Nabong_writer/noticeboard.jsp");
 			

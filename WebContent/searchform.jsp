@@ -9,6 +9,12 @@
 <title>나봉게시판에 오신것을 환영합니다</title>
 <%
 	String user_id = (String) session.getAttribute("user_id");
+WriteVo vo = new WriteVo();
+WriteDao dao = new WriteDao();
+String searchString = request.getParameter("searchType");
+int searchInt = Integer.parseInt(searchString);
+String searchName = request.getParameter("search");
+ArrayList<WriteVo> search = dao.search(searchInt, searchName);
 %>
 <%
 	if (user_id == null) {
@@ -88,10 +94,11 @@
 
 			</div>
 			<div id="border"
-				style="background-color: #EEEEEF; height: 733px; align-content: center;">
+				style="background-color: #EEEEEF; height: 733px; align-content: center; text-align: center;">
 				<fieldset
 					style="height: 700px; line-height: 2.3em; align-content: center;">
-					<br>
+					<b>[총 검색된 글 : <%=search.size()%>개]
+					</b><br>
 					<table style="line-height: 2.3em;" align="center">
 						<tr align="center" bgcolor="gray">
 							<th width="80"><b>번호</b></th>
@@ -102,19 +109,14 @@
 						</tr>
 						<%
 							//dao를 선언하고 배열을 불러와서 값이 있으면
-							WriteVo vo = new WriteVo();
-							WriteDao dao = new WriteDao();
-							String searchString = request.getParameter("searchType");
-							int searchInt = Integer.parseInt(searchString);
-							String searchName = request.getParameter("search");
-							ArrayList<WriteVo> search = dao.search(searchInt, searchName);
+							
 							if (!search.isEmpty()) {
 								for (/*WriteVo i: board*/ int i = 0; i < search.size(); i++) {
 						%>
 						<tr align="center">
 							<!-- href를 서블릿으로 바꿔야ㅚㄹ거같은데? -->
 							<td><a
-								href="/Nabong_writer/ReadServlet?board_no=<%=search.get(i).getBoard_no()%>"><%=search.get(i).getBoard_no()%></a></td>
+								href="/Nabong_writer/ReadServlet?board_no=<%=search.get(i).getBoard_no()%>"><%= i + 1 %></a></td>
 							<td><a
 								href="/Nabong_writer/ReadServlet?board_no=<%=search.get(i).getBoard_no()%>"><%=search.get(i).getBoard_title()%></a></td>
 							<td><%=search.get(i).getBoard_user()%></td>
