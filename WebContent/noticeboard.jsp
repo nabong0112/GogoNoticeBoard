@@ -5,6 +5,12 @@
 <%@ page import="java.util.ArrayList"%>
 <html>
 <head>
+<style type="text/css">
+a:link{color:black;}
+a:visited{color:black;} 
+a:hover{color:blue;}
+a:active{color:yellow;}
+</style>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>나봉게시판에 오신것을 환영합니다</title>
 <%
@@ -67,7 +73,7 @@
 				<a href="noticeboard.jsp"><img src="file:///C:/Java/eGovFrameDev-3.8.0-32bit/workspace/Nabong_writer/WebContent/image/notice.png"
 					width="200px" height="100px"></a>
 			</div>
-			<b>회원 <%=user_id%></b>님 안녕하세요! <a href="myPage.jsp" >내정보</a> 
+			<b>회원 <%=user_id%></b>님 안녕하세요! <a href="myPage.jsp"style="text-decoration: none;" >내정보</a> 
 			<input type="button" name="logout" value="로그아웃"
 				onclick="javascript:logout();">
 		</div>
@@ -151,9 +157,9 @@
 								
 						%>
 						<tr align="center">
-							<td><a
-								href="/Nabong_writer/ReadServlet?board_no=<%=board.get(i).getBoard_no()%>"><%=board.get(i).getBoard_no() %></a></td>
-							<td><a
+							<td><a style="text-decoration: none;"
+								href="/Nabong_writer/ReadServlet?board_no=<%=board.get(i).getBoard_no()%>"><%= i + 1 %></a></td>
+							<td><a style="text-decoration: none;"
 								href="/Nabong_writer/ReadServlet?board_no=<%=board.get(i).getBoard_no()%>"><%=board.get(i).getBoard_title()%></a></td>
 							<td><%=board.get(i).getBoard_user()%></td>
 							<td><%=board.get(i).getBoard_time()%></td>
@@ -180,7 +186,7 @@
 							<tr>
 								<% 
 								if(nowPage != 1) {%>
-								<td align="center"><b><a href="noticeboard.jsp?nowPage=<%=nowPage - 1%>"> 이전 </a></b></td>
+								<td align="center"><b><a href="noticeboard.jsp?nowPage=<%=nowPage - 1%>" style="text-decoration: none;"> ◀ </a></b></td>
 								
 								<%}
 									for (int Count = startPage; Count <= endPage; Count++) { //페이징 페이지 번호를 출력
@@ -188,8 +194,7 @@
 										if (Count == nowPage) { //현재 페이지에는 굵은 표시
 								%>
 
-								<td align="center"><b><a
-										href="noticeboard.jsp?nowPage=<%=Count%>"> [<%=Count%>]
+								<td align="center"><b><a href="noticeboard.jsp?nowPage=<%=Count%>" style="text-decoration: none;"> [<%=Count%>]
 									</a></b></td>
 
 								<%
@@ -198,7 +203,7 @@
 								<!-- 현재 페이지가 아닌 경우 아무표시 없음 -->
 
 								<td align="center">
-								<a href="noticeboard.jsp?nowPage=<%=Count%>"> <%=Count%></a>
+								<a href="noticeboard.jsp?nowPage=<%=Count%>" style="text-decoration: none;"> <%=Count%></a>
 								</td>
 								
 
@@ -207,7 +212,7 @@
 
 								}  %>
 								<% if(nowPage <= totalPage) {%>
-										<td align="center"><b><a href="noticeboard.jsp?nowPage=<%=nowPage + 1 %>"> 다음 </a></b></td>
+										<td align="center"><b><a href="noticeboard.jsp?nowPage=<%=nowPage + 1 %>" style="text-decoration: none; text-shadow: none;"> ▶ </a></b></td>
 								
 								<% 	} %>
 

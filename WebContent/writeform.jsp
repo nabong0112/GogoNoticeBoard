@@ -51,7 +51,7 @@
 				<script type="text/javascript">
 				function update(){
 					var form = document.write;
-					var bool = confirm('등록 하시겠습니까? 문자 앞 공백은 삭제 후 등록됩니다');
+					var bool = confirm('등록 하시겠습니까?');
 					if(bool == true){ 
 						if(!form['title'].value){
 							
