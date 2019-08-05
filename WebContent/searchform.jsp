@@ -86,7 +86,7 @@ ArrayList<WriteVo> search = dao.search(searchInt, searchName);
 							<option value="1">내용</option>
 							<option value="2">제목+내용</option>
 							<option value="3">글쓴이</option>
-						</select> <input type="text" name="search" size="40"> <input
+						</select> <input type="text" name="search" size="40" value="<%= searchName %>"> <input
 							type="submit" name="gosearch" size="20" value="검색"><br>
 						<br>
 					</form>
