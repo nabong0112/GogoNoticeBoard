@@ -57,7 +57,6 @@ a:active{color:yellow;}
 		if (bool == true) {
 			alert("안녕히가세요!");
 			location.href = "loginform.jsp";
-			session.invalidate();
 		} else {
 			location.replace("noticeboard.jsp");
 		}
