@@ -50,14 +50,17 @@ a:active{color:yellow;}
 	<%
 		}
 	%>
-	<div class="container">
+	<div class="container" style="background-color: #E2E2E2;">
 		<div id="header"
-			style="background-color: #FFFFFE; border: 1px solid #dddddd; height: 100px">
-			<!-- 로그아웃 action값에 저거 말고 로그인 확인하는 폼(logout_ok.java) 만들어야됨 세션 끊으면서 안녕히가세요! 라는 alter인가-->
-			<a href="noticeboard.jsp"><img alt="메인으로" src="\image\notice.png"
-				width="200px" height="100px"></a> <b>회원 <%=user_id%></b>님 안녕하세요! <a
-				href="myPage.jsp">내 정보</a> <input type="button" name="logout"
-				value="로그아웃" onclick="javascript:logout();">
+			style=" height: 110px; text-align: right;">
+			<div id="main"
+				style=" height: 80px; text-align: left;">
+				<a href="noticeboard.jsp"><img src="image/notice.png"
+					width="200px" height="100px"></a>
+			</div>
+			<b>회원 <%=user_id%></b>님 안녕하세요! <a href="myPage.jsp"style="text-decoration: none;" >내정보</a> 
+			<input type="button" name="logout" value="로그아웃"
+				onclick="javascript:logout();">
 		</div>
 		<script type="text/javascript">
 			function logout() {
@@ -188,12 +191,13 @@ a:active{color:yellow;}
 							<td><%=commentboard.get(i).getComment_user()%></td>
 							<td><%=commentboard.get(i).getComment_text()%></td>
 							<td><%=commentboard.get(i).getComment_time()%><br>
- 							<% if (user_id.equals(commentboard.get(i).getComment_user())) {
+ 						 	<% if (user_id.equals(commentboard.get(i).getComment_user())) {
  								%>
-								<a href="javascript:update_comment();">수정하기</a> <a href="/Nabong_writer/DeleteCommentServelt?board_no=<%=board_no%>&comment_no=<%=commentboard.get(i).getComment_no()%>">
+								<!-- <a href="javascript:update_comment();">수정하기</a>  -->
+								<a href="/Nabong_writer/DeleteCommentServelt?board_no=<%=board_no%>&comment_no=<%=commentboard.get(i).getComment_no()%>">
 									삭제하기</a><br> <%
  								} //바로위 if문 끝
- 								%> <a href="javascript:doDisplay();">답글달기</a></td>
+ 								%>  <a href="javascript:doDisplay();">답글달기</a></td>
 							<%
 									}//for문 끝
 								} else {

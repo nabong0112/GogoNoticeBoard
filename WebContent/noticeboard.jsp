@@ -70,7 +70,7 @@ a:active{color:yellow;}
 			style="background-color: #E2E2E2; height: 110px; text-align: right;">
 			<div id="main"
 				style="background-color: #E2E2E2; height: 80px; text-align: left;">
-				<a href="noticeboard.jsp"><img src="file:///C:/Java/eGovFrameDev-3.8.0-32bit/workspace/Nabong_writer/WebContent/image/notice.png"
+				<a href="noticeboard.jsp"><img src="image/notice.png"
 					width="200px" height="100px"></a>
 			</div>
 			<b>회원 <%=user_id%></b>님 안녕하세요! <a href="myPage.jsp"style="text-decoration: none;" >내정보</a> 
@@ -139,7 +139,7 @@ a:active{color:yellow;}
 				style="background-color: #EEEEEF; height: 733px; align-content: center;">
 				<fieldset
 					style="height: 100%; line-height: 2.3em; align-content: center; text-align: center;">
-					<b>[총 게시판 갯수 : <%=board.size()%>개]
+					<b>[총 글 갯수 : <%=board.size()%>개]
 					</b><br>
 					<table style="line-height: 2.3em;" align="center">
 						<tr align="center" bgcolor="gray">

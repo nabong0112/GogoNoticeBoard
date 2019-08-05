@@ -47,7 +47,7 @@ ArrayList<WriteVo> search = dao.search(searchInt, searchName);
 			<div id="main"
 				style="background-color: #E2E2E2; height: 80px; text-align: left;">
 				<a href="noticeboard.jsp"><img
-					src="/Nabong_writer/WebContent/image/notice.png" width="200px"
+					src="image/notice.png" width="200px"
 					height="100px"></a>
 			</div>
 			<b>회원 <%=user_id%></b>님 안녕하세요! <a href="myPage.jsp">내정보</a> <input

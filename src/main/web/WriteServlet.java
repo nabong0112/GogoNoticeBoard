@@ -83,14 +83,14 @@ public class WriteServlet extends HttpServlet {
 			
 			if(board != null) {
 				for(WriteVo i: board) {
-					System.out.println("-------------글 목록 : 총 " + i + "개---------------");
+					System.out.println("-------------글 목록 : 총 " + board.size() + "개---------------");
 					System.out.println(i.getBoard_no()+ " ");
 					System.out.println(i.getBoard_title()+ " ");
 					System.out.println(i.getBoard_text()+ " ");
 					System.out.println(i.getBoard_user()+ " ");
 					System.out.println(i.getBoard_time()+ " ");
 					System.out.println(i.getBoard_view()+ " ");	
-					System.out.println("---------------글목록 끝---------------------------");
+					System.out.println("---------------글목록 끝-------------");
 				}
 			}else {
 				System.out.println("없음");
