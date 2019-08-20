@@ -50,12 +50,12 @@ a:active{color:yellow;}
 	<%
 		}
 	%>
-	<div class="container" style="background-color: #E2E2E2;">
+	<div class="container" >
 		<div id="header"
 			style=" height: 110px; text-align: right;">
 			<div id="main"
 				style=" height: 80px; text-align: left;">
-				<a href="noticeboard.jsp"><img src="image/notice.png"
+				<a href="NoticeBoardServelet"><img src="image/notice.png"
 					width="200px" height="100px"></a>
 			</div>
 			<b>회원 <%=user_id%></b>님 안녕하세요! <a href="myPage.jsp"style="text-decoration: none;" >내정보</a> 
@@ -66,10 +66,9 @@ a:active{color:yellow;}
 			function logout() {
 				var form = document.logout;
 				var bool = confirm('로그아웃 하시겠습니까?');
-				if (bool == true) {
+				if (bool) {
 					alert("안녕히가세요!");
 					location.href = "loginform.jsp";
-					session.invalidate();
 
 				} else {
 					location.replace("#");
@@ -101,7 +100,7 @@ a:active{color:yellow;}
 				style="text-align: center; border: 1px solid #dddddd; line-height: 2.3em;">
 				<thead>
 					<tr>
-						<th colspan="7" style="background-color: #eeeeee; text-align: center;"><%=board_no%>번째글</th>
+						<th colspan="7" style="background-color: #eeeeee; text-align: center;">^^</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -133,7 +132,7 @@ a:active{color:yellow;}
 			</table>
 			<!-- ----------------------------------------------- 글 보여주는곳 끝 --------------------------------------------------------- -->
 			<div align="center">
-				<a href="noticeboard.jsp" class="btn btn-primary" style="text-decoration: none;">목록으로</a>
+				<a href="NoticeBoardServelet" class="btn btn-primary" style="text-decoration: none;">목록으로</a>
 				<%
 					//글작성자 본인일시 수정 삭제 가능 
 					if (user_id != null) {
@@ -142,7 +141,7 @@ a:active{color:yellow;}
 				<a href="/Nabong_writer/UpdateServlet?board_no=<%=board_no%>"
 					class="btn btn-primary" style="text-decoration: none;">수정하기</a> <a
 					onclick="return confirm('글을 삭제하시겠습니까? 삭제하시면 복구할 수 없습니다!')"
-					href="/Nabong_writer/DeleteServlet?board_no=<%=board_no%>"
+					href="/Nabong_writer/DeleteServlet?board_no=<%=board_no%>&user_id=<%= user %>"
 					class="btn btn-primary" style="text-decoration: none;">삭제하기</a>
 				<%
 						}
@@ -194,7 +193,7 @@ a:active{color:yellow;}
  						 	<% if (user_id.equals(commentboard.get(i).getComment_user())) {
  								%>
 								<!-- <a href="javascript:update_comment();">수정하기</a>  -->
-								<a href="/Nabong_writer/DeleteCommentServelt?board_no=<%=board_no%>&comment_no=<%=commentboard.get(i).getComment_no()%>">
+								<a href="/Nabong_writer/DeleteCommentServelt?board_no=<%=board_no%>&comment_no=<%=commentboard.get(i).getComment_no()%>&comment_id=<%= commentboard.get(i).getComment_user()%>">
 									삭제하기</a><br> <%
  								} //바로위 if문 끝
  								%>  <a href="javascript:doDisplay();">답글달기</a></td>

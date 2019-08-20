@@ -1,6 +1,7 @@
 package main.web;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import main.dao.WriteDao;
+import main.vo.WriteVo;
 
 /**
  * Servlet implementation class SearchServlet
@@ -40,7 +42,9 @@ public class SearchServlet extends HttpServlet {
 		System.out.println("검색 옵션 : " + searchInt);
 		System.out.println("검색 내용 : " + searchName);
 		
-		dao.search(searchInt, searchName);
+		ArrayList<WriteVo> search = dao.search(searchInt, searchName);
+		
+		request.setAttribute("search", search);
 		
 		RequestDispatcher rd = request.getRequestDispatcher("/searchform.jsp?SearchType=" + searchInt + "&search" + searchName);
 		rd.forward(request, response);

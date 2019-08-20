@@ -14,9 +14,15 @@ WriteDao dao = new WriteDao();
 String searchString = request.getParameter("searchType");
 int searchInt = Integer.parseInt(searchString);
 String searchName = request.getParameter("search");
-ArrayList<WriteVo> search = dao.search(searchInt, searchName);
+ArrayList<WriteVo> search =(ArrayList<WriteVo>) request.getAttribute("search");
 %>
 <%
+	int nowPage = 0;
+	if (request.getParameter("nowPage") != null) {
+	nowPage = Integer.parseInt(request.getParameter("nowPage"));
+	} else {
+	nowPage = 1;
+	}
 	if (user_id == null) {
 %>
 
@@ -43,10 +49,10 @@ ArrayList<WriteVo> search = dao.search(searchInt, searchName);
 <body>
 	<div id="container">
 		<div id="header"
-			style="background-color: #E2E2E2; height: 110px; text-align: right;">
+			style=" height: 110px; text-align: right;">
 			<div id="main"
-				style="background-color: #E2E2E2; height: 80px; text-align: left;">
-				<a href="noticeboard.jsp"><img
+				style="height: 80px; text-align: left;">
+				<a href="NoticeBoardServelet"><img
 					src="image/notice.png" width="200px"
 					height="100px"></a>
 			</div>
@@ -61,7 +67,6 @@ ArrayList<WriteVo> search = dao.search(searchInt, searchName);
 				if (bool == true) {
 					alert("안녕히가세요!");
 					location.href = "loginform.jsp";
-					session.invalidate();
 
 				} else {
 					location.replace("noticeboard.jsp");
@@ -93,6 +98,36 @@ ArrayList<WriteVo> search = dao.search(searchInt, searchName);
 				</fieldset>
 
 			</div>
+			<%
+				int countPage = 5; //한번에 출력될 페이지 수
+				int totalCount = search.size(); //총 게시글 수
+				int countList = 7; //한 페이지에 출력될 게시글 수
+				int totalPage = totalCount / countList; //총 몇페이지인지 알기위해
+				int startPage = ((nowPage - 1) / countPage) * countPage + 1; //첫 페이지 구하기
+				//현재페이지에서 1을 뺀 수를 countPage로 나눈뒤 그 값을 다시 countPage로 곱한뒤 1을 더해준다
+				int endPage = startPage + countPage - 1; //마지막 페이지 구하기
+				int beginNum = (nowPage - 1) * countList; //현재페이지에서 1을 뺀 수에서 한 페이지에 출력될 게시글 수를 곱하면
+				//예를들어 현재페이지가 1이면 1-1*7 이므로 0 그리고 0 + 7 하면 7 그러니까 0번글부터 7번글까지 나오게 함
+				int endNum = beginNum + countList;
+				if (totalCount % countList > 0) {
+
+					totalPage++;
+
+				} //여기까지 하면 총 페이지 수를 알 수 있게 됨
+				if (totalPage < nowPage) { //총 페이지보다 페이지가 수가 더 클때 치환
+
+					nowPage = totalPage;
+
+				}
+				if (endPage > totalPage) { //총 페이지보다 마지막 페이지 수가 더 클때 치환
+
+					endPage = totalPage;
+
+				}
+				if(endNum > totalCount){
+					endNum = totalCount;
+				}
+			%>
 			<div id="border"
 				style="background-color: #EEEEEF; height: 733px; align-content: center; text-align: center;">
 				<fieldset
@@ -111,7 +146,7 @@ ArrayList<WriteVo> search = dao.search(searchInt, searchName);
 							//dao를 선언하고 배열을 불러와서 값이 있으면
 							
 							if (!search.isEmpty()) {
-								for (/*WriteVo i: board*/ int i = 0; i < search.size(); i++) {
+								for (int i = beginNum; i < endNum; i++) {
 						%>
 						<tr align="center">
 							<!-- href를 서블릿으로 바꿔야ㅚㄹ거같은데? -->
@@ -136,6 +171,46 @@ ArrayList<WriteVo> search = dao.search(searchInt, searchName);
 							%>
 						</tr>
 					</table>
+					<div id="Page" align="center">
+						<table>
+							<tr>
+								<% 
+								if(nowPage != 1) {%>
+								<td align="center"><b><a href="SearchServlet?nowPage=<%=nowPage - 1%>&searchType=<%= searchInt %>&search=<%= searchName %>&gosearch=검색" style="text-decoration: none;"> ◀ </a></b></td>
+								
+								<%}
+									for (int Count = startPage; Count <= endPage; Count++) { //페이징 페이지 번호를 출력
+										
+										if (Count == nowPage) { //현재 페이지에는 굵은 표시
+								%>
+
+								<td align="center"><b><a href="SearchServlet?nowPage=<%=Count%>&searchType=<%= searchInt %>&search=<%= searchName %>&gosearch=검색" style="text-decoration: none;"> [<%=Count%>]
+									</a></b></td>
+
+								<%
+									} else {
+								%>
+								<!-- 현재 페이지가 아닌 경우 아무표시 없음 -->
+
+								<td align="center">
+								<a href="SearchServlet?nowPage=<%=Count%>&searchType=<%= searchInt %>&search=<%= searchName %>&gosearch=검색" style="text-decoration: none;"> <%=Count%></a>
+								</td>
+								
+
+								<%}
+										
+
+								}  %>
+								<% if(nowPage < totalPage) {%>
+										<td align="center"><b><a href="SearchServlet?nowPage=<%=nowPage + 1 %>&searchType=<%= searchInt %>&search=<%= searchName %>&gosearch=검색" style="text-decoration: none; text-shadow: none;"> ▶ </a></b></td>
+								
+								<% 	} %>
+
+
+
+							</tr>
+						</table>
+					</div>
 					<div align="center">
 						<br>
 						<button style="height: 50px; width: 100px;"
@@ -145,7 +220,7 @@ ArrayList<WriteVo> search = dao.search(searchInt, searchName);
 					</div>
 					<script type="text/javascript">
 						function goboard() {
-							location.href = "/Nabong_writer/noticeboard.jsp";
+							location.href = "NoticeBoardServelet";
 						}
 					</script>
 					<!-- <input type="button" name="write" style="height: 50px; width: 100px;"  onClick= "javascript:write();">글쓰기</ -->

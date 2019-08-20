@@ -133,13 +133,13 @@ public class TestServlet extends HttpServlet {
 				//클라이언트가 입력한 데이터를 넘겨줌
 				dao.insert(vo);
 				//join폼으로 이동해서 값을 받아야됨
-				out.println("<script type=\"text/javascript\">");
+				out.println("<script type='text/javascript'>");
 				out.println("alert('회원가입을 축하드립니다!');");
 				out.println("</script>");
 				response.sendRedirect("/Nabong_writer/loginform.jsp");
 			} else {
 				System.out.println("중복 아이디");
-				out.println("<script type=\"text/javascript\">");
+				out.println("<script type='text/javascript'>");
 				out.println("alert('이미 있는 아이디입니다');");
 				out.println("history.back();");
 				out.println("</script>");

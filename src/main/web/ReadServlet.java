@@ -42,44 +42,51 @@ public class ReadServlet extends HttpServlet {
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
 		WriteDao dao = new WriteDao();
-		HttpSession session = request.getSession();
+		HttpSession session = request.getSession(false);
 		String session_user = (String) session.getAttribute("user_id");
-		if (session_user == null) {
-			out.println("<script type=\"text/javascript\">");
-			out.println("alert('비회원은 댓글을 작성하실 수 없습니다!');");
-			out.println("location.href = 'loginform.jsp';");
-			out.println("</script>");
-		} else {
-			int board_no = Integer.parseInt(request.getParameter("board_no"));
-			int num;
-			int view;
-			String title;
-			String text;
-			String user;
-			String time;
-			System.out.println("------int no-----------");
-			System.out.println(board_no);
-			System.out.println("-------getBoard----------");
-			WriteVo vo = dao.getBoard(board_no);
-			dao.view(board_no);
-			System.out.println("-----------------");
-			text = vo.getBoard_text();
-			title = vo.getBoard_title();
-			user = vo.getBoard_user();
-			time = vo.getBoard_time();
-			view = vo.getBoard_view();
-			num = vo.getBoard_no();
+		int board_no = Integer.parseInt(request.getParameter("board_no"));
+		int num;
+		int view;
+		String title;
+		String text;
+		String user;
+		String time;
+		try {
+			if (session_user == null || session_user.equals(null) || session == null || board_no == 0) {
+				out.println("<script type=\"text/javascript\">");
+				out.println("alert('비회원은 댓글을 작성하실 수 없습니다!');");
+				out.println("location.href = 'loginform.jsp';");
+				out.println("</script>");
+				response.sendRedirect("/loginform.jsp");
+			} else {
+				
+				System.out.println("------int no-----------");
+				System.out.println(board_no);
+				System.out.println("-------getBoard----------");
+				WriteVo vo = dao.getBoard(board_no);
+				dao.view(board_no);
+				System.out.println("-----------------");
+				text = vo.getBoard_text();
+				title = vo.getBoard_title();
+				user = vo.getBoard_user();
+				time = vo.getBoard_time();
+				view = vo.getBoard_view();
+				num = vo.getBoard_no();
 
-			request.setAttribute("board_no", num);
-			request.setAttribute("text", vo.getBoard_text());
-			request.setAttribute("title", vo.getBoard_title());
-			request.setAttribute("user", vo.getBoard_user());
-			request.setAttribute("time", vo.getBoard_time());
-			request.setAttribute("view", vo.getBoard_view());
-			// 뭔가 전달할 값이 있을때에는 이거 갱신할때에는 response
-			RequestDispatcher rd = request.getRequestDispatcher("/Readform.jsp?board_no=" + num);
-			rd.forward(request, response);
+				request.setAttribute("board_no", num);
+				request.setAttribute("text", vo.getBoard_text());
+				request.setAttribute("title", vo.getBoard_title());
+				request.setAttribute("user", vo.getBoard_user());
+				request.setAttribute("time", vo.getBoard_time());
+				request.setAttribute("view", vo.getBoard_view());
+				// 뭔가 전달할 값이 있을때에는 이거 갱신할때에는 response
+				RequestDispatcher rd = request.getRequestDispatcher("/Readform.jsp?board_no=" + num);
+				rd.forward(request, response);
+			}
+		}catch(NullPointerException e) {
+			response.sendRedirect("/loginform.jsp");
 		}
+		
 		/*
 		 * out.println("<script type=\"text/javascript\">");
 		 * out.println("alert('글이 존재하지 않습니다!');");

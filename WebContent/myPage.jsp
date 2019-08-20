@@ -23,7 +23,7 @@
 			function logout() {
 				var form = document.logout;
 				var bool = confirm('로그아웃 하시겠습니까?');
-				if (bool == true) {
+				if (bool) {
 					alert("안녕히가세요!");
 					location.href = "loginform.jsp";
 					session.invalidate();
@@ -42,7 +42,7 @@
 				</b><br>
 				<button onClick="javascript:Update();">변경하기</button>
 				<button onClick="">탈퇴하기</button>
-				<a href="noticeboard.jsp">메인으로</a>
+				<a href="NoticeBoardServelet">메인으로</a>
 			</fieldset>
 		</div>
 

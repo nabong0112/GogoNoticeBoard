@@ -91,16 +91,14 @@ public class WriteServlet extends HttpServlet {
 					System.out.println(i.getBoard_time()+ " ");
 					System.out.println(i.getBoard_view()+ " ");	
 					System.out.println("---------------글목록 끝-------------");
+			
+					
 				}
+				
 			}else {
 				System.out.println("없음");
 			}
-			
-			out.println("<script type='text/javascript'>");
-			out.println("alert('글이 등록되었습니다!');");
-			
-			out.println("</script>");
-			response.sendRedirect("/Nabong_writer/noticeboard.jsp");
+			response.sendRedirect("NoticeBoardServelet");
 			
 			
 		}

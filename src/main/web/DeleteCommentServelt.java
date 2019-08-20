@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import main.dao.WriteDao;
 import main.vo.CommentVo;
@@ -35,17 +36,29 @@ public class DeleteCommentServelt extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
-		int board_no = Integer.parseInt(request.getParameter("board_no"));
-		int comment_no = Integer.parseInt(request.getParameter("comment_no"));
+		//false를 하면 세션이 없을때 새롭게 세션을 안만들고 null로 반환해서 null체크를 해야함
+		HttpSession session = request.getSession(false);
+		
 		WriteDao dao = new WriteDao();
 		CommentVo vo = new CommentVo();
+		int board_no = Integer.parseInt(request.getParameter("board_no"));
+		int comment_no = Integer.parseInt(request.getParameter("comment_no"));
+		//댓글 쓴 아이디
+		String comment_id = request.getParameter("comment_id");
+		//세션에 있는 아이디
+		String session_id = (String)session.getAttribute("user_id");
+		
+		if(comment_id == null ||session_id == null || !comment_id.equals(session_id)) {
+			response.sendRedirect("NoticeBoardServelet");
+			System.out.println(comment_id +"댓글단 아이디");
+			System.out.println(session_id + "세션에 있는 아이디");
+			System.out.println("잘못된 댓글 삭제");
+		} else {
+		System.out.println(comment_id +"의 댓글 삭제 성공");
 		dao.DeleteComment(board_no, vo, comment_no);
-
-		out.println("<script type=\"text/javascript\">");
-		out.println("alert('삭제되었습니다');");
-		out.println("</script>");
 		
 		response.sendRedirect("ReadServlet?board_no=" + board_no);
+		}
 	}
 
 	/**

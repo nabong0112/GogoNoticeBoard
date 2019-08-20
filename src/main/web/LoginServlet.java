@@ -37,7 +37,7 @@ public class LoginServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());	
-		
+		doPost(request, response);
 		
 	}
 
@@ -78,8 +78,7 @@ public class LoginServlet extends HttpServlet {
 				session.setAttribute("user_name", user_name);
 				session.setAttribute("user_pw", user_pw);
 				//게시판 서블릿으로 전달
-				RequestDispatcher rd = request.getRequestDispatcher("NoticeBoardServelet");
-				rd.forward(request, response);
+				response.sendRedirect("NoticeBoardServelet");
 				
 			} else if(ok == 0) {
 				out.println("<script type=\"text/javascript\">");

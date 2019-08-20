@@ -38,9 +38,16 @@
 			
 		<%	} %>
 	<div class="container">
-		<div id ="header" style="background-color:#FFFFFE;height: 50px">  <!-- 로그아웃 action값에 저거 말고 로그인 확인하는 폼(logout_ok.java) 만들어야됨 세션 끊으면서 안녕히가세요! 라는 alter인가-->
-	<b>회원 <%= user_id %></b>님 안녕하세요! <a href="myPage.jsp">내 정보</a> 
-	<input type="button" name="logout" value ="로그아웃" onclick="javascript:logout();">
+		<div id="header"
+			style="height: 110px; text-align: right;">
+			<div id="main"
+				style="height: 80px; text-align: left;">
+				<a href="NoticeBoardServelet"><img src="image/notice.png"
+					width="200px" height="100px"></a>
+			</div>
+			<b>회원 <%=user_id%></b>님 안녕하세요! <a href="myPage.jsp"style="text-decoration: none;" >내정보</a> 
+			<input type="button" name="logout" value="로그아웃"
+				onclick="javascript:logout();">
 		</div>
 	<script type="text/javascript">
 	function logout(){
@@ -49,7 +56,6 @@
 		if(bool == true){
 			alert("안녕히가세요!");
 			location.href = "loginform.jsp";
-			session.invalidate();
 	
 		} else{
 			location.replace("#");
@@ -95,8 +101,8 @@
 				<script type="text/javascript">
 				function Back(){
 					var bool = confirm('돌아가시겠습니까? 지금까지 작성한 글은 저장되지 않습니다!');
-					if(bool == true){
-						location.href="noticeboard.jsp"
+					if(bool){
+						location.href="NoticeBoardServelet"
 					} else{
 						return false;
 					}

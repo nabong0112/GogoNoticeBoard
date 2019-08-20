@@ -111,7 +111,7 @@ public class WriteDao {
 			pstmt = conn.prepareStatement(sql);
 
 			rs = pstmt.executeQuery();
-
+			if(rs != null) {
 			while (rs.next()) {
 				WriteVo vo = new WriteVo();
 				vo.setBoard_no(rs.getInt(1));
@@ -121,6 +121,9 @@ public class WriteDao {
 				vo.setBoard_time(rs.getString(5));
 				vo.setBoard_view(rs.getInt(6));
 				border.add(vo);
+				}
+			}else {
+				System.out.println("값 없음");
 			}
 
 		} catch (SQLException e) {
@@ -196,7 +199,7 @@ public class WriteDao {
 
 				rs = pstmt.executeQuery();
 			}
-
+			if(rs != null) {
 			while (rs.next()) {
 				WriteVo vo = new WriteVo();
 				vo.setBoard_no(rs.getInt(1));
@@ -206,6 +209,9 @@ public class WriteDao {
 				vo.setBoard_time(rs.getString(5));
 				vo.setBoard_view(rs.getInt(6));
 				search.add(vo);
+			}
+			} else {
+				System.out.println("검색결과 없음");
 			}
 
 		} catch (SQLException e) {
@@ -257,7 +263,7 @@ public class WriteDao {
 				vo.setBoard_title(rs.getString(2));
 				vo.setBoard_text(rs.getString(3));
 				vo.setBoard_user(rs.getString(4));
-				vo.setBoard_time(rs.getString(5));
+				vo.setBoard_time(rs.getString(7));
 				vo.setBoard_view(rs.getInt(6));
 
 				String text = vo.getBoard_text();
@@ -358,7 +364,7 @@ public class WriteDao {
 			pstmt.setInt(1, board_no);
 
 			rs = pstmt.executeQuery();
-
+			if(rs != null) {
 			while (rs.next()) {
 				CommentVo vo = new CommentVo();
 				vo.setBoard_no(rs.getInt(1));
@@ -371,6 +377,9 @@ public class WriteDao {
 				// vo.setComment_re_text(rs.getString(8));
 				// vo.setComment_re_time(rs.getString(9));
 				comm.add(vo);
+			}
+			} else {
+				System.out.println("댓글 없음");
 			}
 
 		} catch (SQLException e) {

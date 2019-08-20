@@ -64,7 +64,7 @@ public class UpdateOkServelt extends HttpServlet {
 		}else {
 			
 		dao.updateText(board_no, title, text);
-		response.sendRedirect("noticeboard.jsp");
+		response.sendRedirect("NoticeBoardServelet");
 		}
 	}
 }

@@ -15,11 +15,9 @@ a:active{color:yellow;}
 <title>나봉게시판에 오신것을 환영합니다</title>
 <%
 	String user_id = (String) session.getAttribute("user_id");
-%>
-<%
-	WriteVo vo = new WriteVo();
+	ArrayList<WriteVo> board = (ArrayList<WriteVo>) request.getAttribute("board");
 	WriteDao dao = new WriteDao(); //게시글 불러옴
-	ArrayList<WriteVo> board = dao.selectText();
+	
 	int nowPage = 0;
 	if (request.getParameter("nowPage") != null) {
 		nowPage = Integer.parseInt(request.getParameter("nowPage"));
@@ -43,10 +41,10 @@ a:active{color:yellow;}
 <script type="text/javascript">
 	function gowrite() { //글쓰기 버튼
 		var bool = confirm('글을 작성하시겠습니까?');
-		if (bool == true) {
+		if (bool) {
 			location.href = "writeform.jsp";
 		} else {
-			location.replace("noticeboard.jsp");
+			return false;
 		}
 	}
 </script>
@@ -54,11 +52,11 @@ a:active{color:yellow;}
 	function logout() { //로그아웃 버튼
 		var form = document.logout;
 		var bool = confirm('로그아웃 하시겠습니까?');
-		if (bool == true) {
+		if (bool) {
 			alert("안녕히가세요!");
 			location.href = "loginform.jsp";
 		} else {
-			location.replace("noticeboard.jsp");
+			return false;
 		}
 	}
 </script>
@@ -66,10 +64,10 @@ a:active{color:yellow;}
 <body>
 	<div id="container">
 		<div id="header"
-			style="background-color: #E2E2E2; height: 110px; text-align: right;">
+			style="height: 110px; text-align: right;">
 			<div id="main"
-				style="background-color: #E2E2E2; height: 80px; text-align: left;">
-				<a href="noticeboard.jsp"><img src="image/notice.png"
+				style="height: 80px; text-align: left;">
+				<a href="NoticeBoardServelet"><img src="image/notice.png"
 					width="200px" height="100px"></a>
 			</div>
 			<b>회원 <%=user_id%></b>님 안녕하세요! <a href="myPage.jsp"style="text-decoration: none;" >내정보</a> 
@@ -157,7 +155,7 @@ a:active{color:yellow;}
 						%>
 						<tr align="center">
 							<td><a style="text-decoration: none;"
-								href="/Nabong_writer/ReadServlet?board_no=<%=board.get(i).getBoard_no()%>"><%= i + 1 %></a></td>
+								href="/Nabong_writer/ReadServlet?board_no=<%=board.get(i).getBoard_no()%>"><%= boardsize - i %></a></td>
 							<td><a style="text-decoration: none;"
 								href="/Nabong_writer/ReadServlet?board_no=<%=board.get(i).getBoard_no()%>"><%=board.get(i).getBoard_title()%></a></td>
 							<td><%=board.get(i).getBoard_user()%></td>
@@ -185,7 +183,7 @@ a:active{color:yellow;}
 							<tr>
 								<% 
 								if(nowPage != 1) {%>
-								<td align="center"><b><a href="noticeboard.jsp?nowPage=<%=nowPage - 1%>" style="text-decoration: none;"> ◀ </a></b></td>
+								<td align="center"><b><a href="NoticeBoardServelet?nowPage=<%=nowPage - 1%>" style="text-decoration: none;"> ◀ </a></b></td>
 								
 								<%}
 									for (int Count = startPage; Count <= endPage; Count++) { //페이징 페이지 번호를 출력
@@ -193,7 +191,7 @@ a:active{color:yellow;}
 										if (Count == nowPage) { //현재 페이지에는 굵은 표시
 								%>
 
-								<td align="center"><b><a href="noticeboard.jsp?nowPage=<%=Count%>" style="text-decoration: none;"> [<%=Count%>]
+								<td align="center"><b><a href="NoticeBoardServelet?nowPage=<%=Count%>" style="text-decoration: none;"> [<%=Count%>]
 									</a></b></td>
 
 								<%
@@ -202,7 +200,7 @@ a:active{color:yellow;}
 								<!-- 현재 페이지가 아닌 경우 아무표시 없음 -->
 
 								<td align="center">
-								<a href="noticeboard.jsp?nowPage=<%=Count%>" style="text-decoration: none;"> <%=Count%></a>
+								<a href="NoticeBoardServelet?nowPage=<%=Count%>" style="text-decoration: none;"> <%=Count%></a>
 								</td>
 								
 
@@ -210,8 +208,8 @@ a:active{color:yellow;}
 										
 
 								}  %>
-								<% if(nowPage <= totalPage) {%>
-										<td align="center"><b><a href="noticeboard.jsp?nowPage=<%=nowPage + 1 %>" style="text-decoration: none; text-shadow: none;"> ▶ </a></b></td>
+								<% if(nowPage < totalPage) {%>
+										<td align="center"><b><a href="NoticeBoardServelet?nowPage=<%=nowPage + 1 %>" style="text-decoration: none; text-shadow: none;"> ▶ </a></b></td>
 								
 								<% 	} %>
 
