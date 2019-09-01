@@ -122,7 +122,7 @@ public class MemberDAO {
 						
 							if(rs.next()) {
 								if(rs.getString(2).equals(user_pw)) {
-				            		System.out.println("로그인 성공");
+				            		System.out.println("DAO : 로그인 성공");
 				            		vo.setUser_id(rs.getString(1));
 				            		vo.setUser_pw(rs.getString(2));
 				            		vo.setUser_name(rs.getString(3));
@@ -130,13 +130,13 @@ public class MemberDAO {
 				            		
 				            	} else {
 				            		ok = 0;
-				            		System.out.println("비밀번호 확인");
+				            		System.out.println("DAO : 아이디 또는 비밀번호를 확인");
 				            		System.out.println(rs.getString(3));
 				            		System.out.println(rs.getString(2) +" 와 "+ user_pw);
 				            		}
 							} else {
 								ok = -1;
-			            		System.out.println("아이디 또는 비밀번호를 확인0");
+								System.out.println("DAO : 아이디 또는 비밀번호에 값이 없음 -1");
 							}
 //							if(rs.getString(1).equals(user_id) && rs.getString(2)!=null && rs.getString(2).equals(user_pw))
 							

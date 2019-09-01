@@ -2,6 +2,7 @@ package main.web;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Time;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -59,17 +60,11 @@ public class LoginServlet extends HttpServlet {
 		MemberDAO dao = new MemberDAO();
 		
 		//usercheck의 리턴값으로 어떻게 할지 정할거임
-		int ok = dao.userCheck(vo, login_id, login_pw);
-		//String login_name = dao.userCheck(vo, login_id, login_pw);
-		//int check = 0;
-		
-		//vo.getUser_pw();
 		//유저의 아이디와 비밀번호가 맞는지 확인하기위해 넘김
-		dao.userCheck(vo, login_id, login_pw);
+		int ok = dao.userCheck(vo, login_id, login_pw);
 		try {
 			//아이디와 비밀번호를 확인한 dao에서 리턴값(ok)을 받아와서 그 값에 알맞은 반응을 보이도록
 			if(ok == 1) {
-				
 				String user_id = vo.getUser_id();
 				String user_pw = vo.getUser_pw();
 				String user_name = vo.getUser_name();
@@ -77,6 +72,7 @@ public class LoginServlet extends HttpServlet {
 				session.setAttribute("user_id", user_id);
 				session.setAttribute("user_name", user_name);
 				session.setAttribute("user_pw", user_pw);
+				System.out.println( "Servlet : '"+ user_id + "'님이 로그인하셨습니다");
 				//게시판 서블릿으로 전달
 				response.sendRedirect("NoticeBoardServelet");
 				

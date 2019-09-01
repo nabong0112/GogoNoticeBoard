@@ -16,7 +16,7 @@ public class LoginDao {
 	Connection conn = null;
 	PreparedStatement prep = null;
 	ResultSet rs = null;
-	
+	/////////////////////////////////////////////////////////MemberDAO로 가세요////////////////////////////////////////////
 	private static LoginDao instance = new LoginDao();
 	
 	public static LoginDao getInstance() {
@@ -57,11 +57,9 @@ public class LoginDao {
 					if(user_pw == null && user_id == null) {
 						
 						ok = -1;
-						System.out.println("아이디 또는 비밀번호를 확인-1");
+						System.out.println("DAO : 아이디 또는 비밀번호에 값이 없음 -1");
 						
 					}else if(rs.getString(2).equals(user_pw)) {
-						
-	            		System.out.println("로그인 성공");
 	            		vo.setUser_id(rs.getString(1));
 	            		vo.setUser_pw(rs.getString(2));
 	            		vo.setUser_name(rs.getString(3));
@@ -70,7 +68,7 @@ public class LoginDao {
 	            	} else {
 	            		
 	            		ok = 0;
-	            		System.out.println("아이디 또는 비밀번호를 확인0");
+	            		System.out.println("DAO : 아이디 또는 비밀번호를 확인");
 	            		System.out.println(rs.getString(3));
 	            	}
 				}
