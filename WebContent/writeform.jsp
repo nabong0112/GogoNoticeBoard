@@ -5,33 +5,36 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>게시글 작성하기</title>
-<%
-	String user_id = (String) session.getAttribute("user_id");
-%>
-<%
-	if (user_id == null) {
-%>
+<% String user_id = (String)request.getAttribute("user_id");
+if(user_id == null){
 
+%>
 <script type="text/javascript">
 	alert("비회원은 글을 작성할 수 없습니다!");
-	location.href = "loginform.jsp";
+	location.href = "login";
 </script>
-
-
-<%
-	}
-%>
+<% } %>
 </head>
 <body>
 	<div id="container">
-		<div id="header" style="height: 110px; text-align: right;">
-			<div id="main" style="height: 80px; text-align: left;">
-				<a href="NoticeBoardServelet"><img src="image/notice.png"
-					width="200px" height="100px"></a>
-			</div>
-			<b>회원 <%=user_id%></b>님 안녕하세요! <a href="myPage.jsp"
-				style="text-decoration: none;">내정보</a> <input type="button"
-				name="logout" value="로그아웃" onclick="javascript:logout();">
+		<div id="header" style="height: 150px; text-align: right;">
+			<a href="/bbs/main"><img src="image/Oh_main.gif" width="200px"
+				height="150px" align="left"></a>
+				<% if(user_id == null) { %>
+				<b>로그인해주세요!</b> <input type="button" class="dropbtn" name="login" value="로그인" onclick="javascript:login();">
+				<% } else { %>
+					<b>회원 <%= user_id %></b>님 안녕하세요! 
+					<div class="dropdown">
+						<button id="myMenu" class="dropbtn">내 메뉴</button>
+							<span id ="myDropdown" class="dropdown-content">
+								<a href="/bbs/myPage">내 정보</a>
+								<a href="/bbs/myPage">내 정보</a>
+								<a href="/bbs/myWriteView">내가 작성한 글</a>
+							</span>
+					</div>
+			<input type="button" class="dropbtn" name="myPage" value="내 정보" onclick="javascript:myPage();"> 
+			<input type="button" class="dropbtn" name="logout" value="로그아웃" onclick="javascript:logout();">
+			<% } %>
 		</div>
 		<script type="text/javascript">
 			function logout() {
