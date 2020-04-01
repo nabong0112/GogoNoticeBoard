@@ -1,2 +1,3 @@
 # GogoNoticeBoard
-Notice_Board
+Servlet 기반 게시판
+
